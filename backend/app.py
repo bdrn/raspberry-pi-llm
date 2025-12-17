@@ -2,9 +2,13 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import os
 from dotenv import load_dotenv
-from services.pdf_parser import extract_text_from_pdf
 
-load_dotenv()
+# Load .env from project root (one level up from backend/)
+env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+load_dotenv(env_path)
+
+from services.pdf_parser import extract_text_from_pdf
+from services.llm_generator import generate_quiz_from_text
 
 app = Flask(__name__)
 CORS(app)
@@ -27,21 +31,26 @@ def upload_file():
         return jsonify({"error": "Invalid file type. Please upload a PDF"}), 400
 
     try:
-        extracted_text = extract_text_from_pdf(file)
+# 1. Parse PDF
+        print(f"Processing {file.filename}...")
+        extracted_text = extract_text_from_pdf(file.stream)
+        
+        # 2. Generate Quiz
+        print("Sending to LLM...")
+        quiz_json = generate_quiz_from_text(extracted_text)
+        
+        print("Quiz Generated!")
 
-        # TODO: Send 'extracted_text to LLM service for processing
-
+        # 3. Return the actual Quiz in json
         return jsonify({
-            "message": "File uploaded successfully",
+            "message": "Quiz generated successfully",
             "filename": file.filename,
-            "char_count": len(extracted_text),
-            "preview": extracted_text[:100] + "..."
+            "quiz": quiz_json 
         }), 200
 
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 422
     except Exception as e:
-        return jsonify({"error": "An unexpected error occurred"}), 500
+            print(f"Error: {e}")
+            return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
