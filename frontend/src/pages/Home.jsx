@@ -2,16 +2,15 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import UploadBox from "../components/UploadBox";
 import QuizCard from "../components/QuizCard";
+import { Card } from "@/components/ui/card";
 
 const Home = () => {
   const [quizzes, setQuizzes] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
 
-  // Function to fetch the current list from the backend
   const fetchQuizzes = async () => {
     try {
       const response = await api.get("/sync");
-      // The backend returns { quizzes: [...] }
       setQuizzes(response.data.quizzes);
     } catch (error) {
       console.error("Failed to fetch quizzes:", error);
@@ -20,37 +19,60 @@ const Home = () => {
     }
   };
 
-  // Load data on page mount
   useEffect(() => {
     fetchQuizzes();
   }, []);
 
-  // Callback when upload finishes
   const handleUploadSuccess = (newQuizData) => {
     console.log("Upload success:", newQuizData);
     fetchQuizzes();
   };
 
   return (
-    <div>
-      <h2 style={{ marginBottom: "20px" }}>My Study Material</h2>
+    <div className="space-y-8">
+      <header className="space-y-2">
+        <p className="text-xs font-medium uppercase tracking-[0.26em] text-slate-400">
+          Dashboard
+        </p>
+        <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
+          Your study library
+        </h1>
+        <p className="max-w-2xl text-sm text-slate-400">
+          Upload lecture notes and turn them into bite-sized quizzes that stay
+          in sync with your Study Buddy device.
+        </p>
+      </header>
 
-      {/* 1. Upload Section */}
-      <UploadBox onUploadSuccess={handleUploadSuccess} />
+      <Card className="border-dashed border-slate-800">
+        <UploadBox onUploadSuccess={handleUploadSuccess} />
+      </Card>
 
-      {/* 2. List Section */}
-      <div>
-        <h3>Available on Device</h3>
+      <section className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs font-medium uppercase tracking-[0.22em] text-slate-400">
+            Available on device
+          </h2>
+          {quizzes.length > 0 && !loadingData && (
+            <span className="text-xs text-slate-400">
+              {quizzes.length} {quizzes.length === 1 ? "quiz" : "quizzes"}
+            </span>
+          )}
+        </div>
+
         {loadingData ? (
-          <p>Loading your library...</p>
+          <p className="text-sm text-slate-400">Loading your library…</p>
         ) : quizzes.length === 0 ? (
-          <p style={{ color: "#888", fontStyle: "italic" }}>
-            No quizzes found. Upload a PDF to start!
+          <p className="text-sm italic text-slate-500">
+            No quizzes yet. Upload a PDF to get started.
           </p>
         ) : (
-          quizzes.map((quiz) => <QuizCard key={quiz.id} quiz={quiz} />)
+          <div className="space-y-3">
+            {quizzes.map((quiz) => (
+              <QuizCard key={quiz.id} quiz={quiz} />
+            ))}
+          </div>
         )}
-      </div>
+      </section>
     </div>
   );
 };

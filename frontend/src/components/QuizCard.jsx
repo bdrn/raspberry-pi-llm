@@ -1,43 +1,34 @@
-const QuizCard = ({ quiz }) => {
-  const cardStyle = {
-    border: "1px solid #ddd",
-    borderRadius: "8px",
-    padding: "20px",
-    marginBottom: "15px",
-    backgroundColor: "#fff",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-  };
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 
+const QuizCard = ({ quiz }) => {
   const meta = quiz.quiz_data && quiz.quiz_data.meta ? quiz.quiz_data.meta : {};
 
   return (
-    <div style={cardStyle}>
-      <h3 style={{ margin: "0 0 10px 0", color: "#333" }}>
-        {meta.topic || quiz.filename}
-      </h3>
-      <div style={{ fontSize: "0.9rem", color: "#666" }}>
-        <p style={{ margin: "5px 0" }}>📄 Source: {quiz.filename}</p>
-        <p style={{ margin: "5px 0" }}>
-          ❓ Questions: {meta.total_questions || "N/A"}
-        </p>
-        <p style={{ margin: "5px 0" }}>
-          Created At: {new Date(quiz.created_at).toLocaleDateString()}
-        </p>
-      </div>
-      <div style={{ marginTop: "10px" }}>
-        <span
-          style={{
-            background: "#e0f7fa",
-            color: "#006064",
-            padding: "4px 8px",
-            borderRadius: "4px",
-            fontSize: "0.8rem",
-          }}
-        >
-          Ready to Sync
+    <Card className="shadow-[0_10px_30px_rgba(0,0,0,0.65)]">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base text-slate-50">
+          {meta.topic || quiz.filename}
+        </CardTitle>
+        <CardDescription className="text-[11px] text-slate-400">
+          Source: {quiz.filename}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex items-end justify-between gap-4 text-xs text-slate-300">
+        <div className="space-y-1">
+          <p>Questions: {meta.total_questions || "N/A"}</p>
+          <p>Created at: {new Date(quiz.created_at).toLocaleDateString()}</p>
+        </div>
+        <span className="inline-flex items-center rounded-full bg-sky-500/15 px-3 py-1 text-[11px] font-medium text-sky-300">
+          Ready to sync
         </span>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

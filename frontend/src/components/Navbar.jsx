@@ -1,34 +1,54 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import logo from "../assets/images/logo.png";
 
 const Navbar = () => {
-  const navStyle = {
-    background: "#333",
-    color: "#fff",
-    padding: "1rem",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  };
+  const location = useLocation();
 
-  const linkStyle = {
-    color: "#fff",
-    textDecoration: "none",
-    marginLeft: "20px",
-    fontWeight: "bold",
-  };
+  const linkBase =
+    "relative rounded-full px-4 py-1.5 text-xs font-medium transition-colors";
+
+  const isActive = (path) =>
+    path === "/"
+      ? location.pathname === "/"
+      : location.pathname.startsWith(path);
 
   return (
-    <nav style={navStyle}>
-      <h1 style={{ margin: 0 }}>Study Buddy Web</h1>
-      <div>
-        <Link to="/" style={linkStyle}>
-          Dashboard
-        </Link>
-        <Link to="/pair" style={linkStyle}>
-          Pair Device
-        </Link>
+    <header className="sticky top-0 z-20 border-b border-slate-900/60 bg-slate-950/95 backdrop-blur">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-2 text-sm font-semibold tracking-[0.18em] text-slate-100 uppercase">
+          <span>Study Buddy</span>
+          <img src={logo} alt="Study Buddy logo" className="w-13 h-12" />
+        </div>
+        <nav className="flex gap-2 text-xs text-slate-300">
+          <Link
+            to="/"
+            className={`${linkBase} ${
+              isActive("/")
+                ? "bg-slate-900 text-slate-50 shadow-sm"
+                : "text-slate-300 hover:bg-slate-800/80"
+            }`}
+          >
+            Dashboard
+            {isActive("/") && (
+              <span className="absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full bg-sky-400" />
+            )}
+          </Link>
+          <Link
+            to="/pair"
+            className={`${linkBase} ${
+              isActive("/pair")
+                ? "bg-slate-900 text-slate-50 shadow-sm"
+                : "text-slate-300 hover:bg-slate-800/80"
+            }`}
+          >
+            Pair device
+            {isActive("/pair") && (
+              <span className="absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full bg-sky-400" />
+            )}
+          </Link>
+        </nav>
       </div>
-    </nav>
+    </header>
   );
 };
 

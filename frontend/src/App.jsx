@@ -2,19 +2,21 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import PairDevice from "./pages/PairDevice";
+import "./App.css";
 
 function App() {
   return (
     <Router>
-      <div style={{ fontFamily: "Arial, sans-serif" }}>
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-slate-900 text-slate-50">
         <Navbar />
-
-        <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/pair" element={<PairDevice />} />
-          </Routes>
-        </div>
+        <main className="mx-auto flex max-w-5xl px-4 pb-10 pt-8">
+          <div className="w-full">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/pair" element={<PairDevice />} />
+            </Routes>
+          </div>
+        </main>
       </div>
     </Router>
   );
