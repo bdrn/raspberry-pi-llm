@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '.env'))
 load_dotenv(env_path)
 
-# Try both OPENAI_API_KEY and OPEN_API_KEY for backwards compatibility
+# Try both OPENAI_API_KEY and OPEN_API_KEY because i have written different names hehe
 api_key = os.getenv("OPENAI_API_KEY") or os.getenv("OPEN_API_KEY")
 if not api_key:
     raise ValueError("OPENAI_API_KEY or OPEN_API_KEY environment variable is not set. Please check your .env file.")
