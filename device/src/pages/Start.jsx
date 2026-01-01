@@ -13,7 +13,7 @@ const Home = () => {
       </header>
 
       <Link
-        to="/"
+        to="/home"
         className="inline-flex min-h-[72px] w-full items-center justify-start bg-transparent px-10 py-6 text-3xl font-semibold text-slate-50 shadow-[0_0_18px_rgba(56,189,248,0.9)] transition animate-pulse"
       >
         Let's Go! 
