@@ -16,10 +16,13 @@ from database.models import db, Quiz
 load_dotenv()
 
 
-app = Flask(__name__)
+app = Flask(__name__, instance_relative_config=True)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///studybuddy.db'
+os.makedirs(app.instance_path, exist_ok=True)
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"sqlite:///{os.path.join(app.instance_path, 'studybuddy.db')}"
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -87,4 +90,4 @@ def sync_device():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=5001, debug=True)
