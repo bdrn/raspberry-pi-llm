@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../api";
 
 const Home = () => {
@@ -56,7 +57,7 @@ const Home = () => {
 
     return Array.from(grouped.entries()).map(([topic, items]) => ({
       topic,
-      items,
+      items: items.map((item) => ({ ...item, topic })),
     }));
   }, [quizzes]);
 
@@ -98,82 +99,109 @@ const Home = () => {
     }));
   };
 
+  const selectedItems = useMemo(() => {
+    return topics.flatMap(({ items }) =>
+      items.filter(({ quizId, question, index }) => {
+        const key = getQuestionKey(quizId, question, index);
+        return Boolean(selectedQuestions[key]);
+      })
+    );
+  }, [selectedQuestions, topics]);
+
   return (
     <div className="flex min-h-[480px] flex-col items-center justify-center gap-6 px-6 py-8">
       <h1 className="text-center text-3xl font-semibold tracking-tight text-slate-50">
         What should we study now?
       </h1>
-      <div className="flex w-full max-w-2xl items-center gap-4">
-        <div
-          ref={listRef}
-          className="h-[320px] flex-1 space-y-6 overflow-y-auto rounded-2xl border border-slate-700/60 bg-slate-900/40 p-4"
-        >
-          {topics.length === 0 ? (
-            <p className="text-center text-sm text-slate-400">
-              No topics available yet.
-            </p>
-          ) : (
-            topics.map(({ topic, items }) => (
-              <div
-                key={topic}
-                className="space-y-3 rounded-2xl bg-slate-950/60 p-4"
-              >
-                <h2 className="text-lg font-semibold text-slate-100">
-                  {topic}
-                </h2>
-                {items.length === 0 ? (
-                  <p className="text-sm text-slate-400">
-                    No questions found for this topic.
-                  </p>
-                ) : (
-                  <div className="space-y-3">
-                    {items.map(({ quizId, question, index }) => {
-                      const key = getQuestionKey(quizId, question, index);
-                      return (
-                        <label
-                          key={key}
-                          className="flex items-start gap-3 rounded-xl border border-slate-800/80 bg-slate-900/60 px-4 py-3 text-slate-100"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={Boolean(selectedQuestions[key])}
-                            onChange={() => toggleQuestion(key)}
-                            className="mt-1 h-5 w-5 rounded border-slate-500 bg-slate-900 text-slate-50 accent-sky-400"
-                          />
-                          <div className="space-y-1">
-                            <p className="text-sm font-medium">
-                              {getQuestionText(question)}
-                            </p>
-                            <p className="text-xs text-slate-400">
-                              {getAnswerText(question)}
-                            </p>
-                          </div>
-                        </label>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            ))
-          )}
+      <div className="w-full max-w-2xl space-y-4">
+        <div className="flex items-center gap-4">
+          <div
+            ref={listRef}
+            className="h-[320px] flex-1 space-y-6 overflow-y-auto rounded-2xl border border-slate-700/60 bg-slate-900/40 p-4"
+          >
+            {topics.length === 0 ? (
+              <p className="text-center text-sm text-slate-400">
+                No topics available yet.
+              </p>
+            ) : (
+              topics.map(({ topic, items }) => (
+                <div
+                  key={topic}
+                  className="space-y-3 rounded-2xl bg-slate-950/60 p-4"
+                >
+                  <h2 className="text-lg font-semibold text-slate-100">
+                    {topic}
+                  </h2>
+                  {items.length === 0 ? (
+                    <p className="text-sm text-slate-400">
+                      No questions found for this topic.
+                    </p>
+                  ) : (
+                    <div className="space-y-3">
+                      {items.map(({ quizId, question, index }) => {
+                        const key = getQuestionKey(quizId, question, index);
+                        return (
+                          <label
+                            key={key}
+                            className="flex items-start gap-3 rounded-xl border border-slate-800/80 bg-slate-900/60 px-4 py-3 text-slate-100"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={Boolean(selectedQuestions[key])}
+                              onChange={() => toggleQuestion(key)}
+                              className="mt-1 h-5 w-5 rounded border-slate-500 bg-slate-900 text-slate-50 accent-sky-400"
+                            />
+                            <div className="space-y-1">
+                              <p className="text-sm font-medium">
+                                {getQuestionText(question)}
+                              </p>
+                              <p className="text-xs text-slate-400">
+                                {getAnswerText(question)}
+                              </p>
+                            </div>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+          <div className="flex flex-col gap-4">
+            <button
+              type="button"
+              onClick={() => scrollList(-1)}
+              aria-label="Scroll up"
+              className="h-16 w-16 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
+            >
+              ↑
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollList(1)}
+              aria-label="Scroll down"
+              className="h-16 w-16 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
+            >
+              ↓
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <button
-            type="button"
-            onClick={() => scrollList(-1)}
-            aria-label="Scroll up"
-            className="h-16 w-16 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
+        <div className="flex gap-4">
+          <Link
+            to="/flashcards"
+            state={{ selectedItems }}
+            className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-6 py-4 text-center text-xl font-semibold text-slate-50"
           >
-          
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollList(1)}
-            aria-label="Scroll down"
-            className="h-16 w-16 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
+            Flashcards
+          </Link>
+          <Link
+            to="/quiz"
+            state={{ selectedItems }}
+            className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-6 py-4 text-center text-xl font-semibold text-slate-50"
           >
-            
-          </button>
+            Quiz
+          </Link>
         </div>
       </div>
     </div>
