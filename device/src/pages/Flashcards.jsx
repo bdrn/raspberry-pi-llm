@@ -1,19 +1,68 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const Flashcards = () => {
   const location = useLocation();
   const selectedItems = location.state?.selectedItems || [];
   const [flipped, setFlipped] = useState({});
-  const listRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const startXRef = useRef(null);
+  const isDraggingRef = useRef(false);
 
   const toggleFlip = (key) => {
     setFlipped((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const scrollList = (direction) => {
-    if (!listRef.current) return;
-    listRef.current.scrollBy({ top: direction * 140, behavior: "smooth" });
+  const cards = useMemo(() => {
+    return selectedItems.map(({ quizId, question, index, topic }) => {
+      const key = `${quizId}-${question?.id ?? index}`;
+      const front =
+        question?.type === "flashcard"
+          ? question.front
+          : question?.question;
+      const back =
+        question?.type === "flashcard"
+          ? question.back
+          : question?.explanation;
+      return {
+        key,
+        topic,
+        front,
+        back,
+      };
+    });
+  }, [selectedItems]);
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => Math.min(prev + 1, cards.length - 1));
+  };
+
+  const goToPrev = () => {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handlePointerDown = (event) => {
+    startXRef.current = event.clientX;
+    isDraggingRef.current = true;
+  };
+
+  const handlePointerMove = (event) => {
+    if (!isDraggingRef.current || startXRef.current === null) return;
+    const delta = event.clientX - startXRef.current;
+    if (Math.abs(delta) > 60) {
+      if (delta < 0) {
+        goToNext();
+      } else {
+        goToPrev();
+      }
+      isDraggingRef.current = false;
+      startXRef.current = null;
+    }
+  };
+
+  const handlePointerUp = () => {
+    isDraggingRef.current = false;
+    startXRef.current = null;
   };
 
   return (
@@ -29,75 +78,78 @@ const Flashcards = () => {
           Back
         </Link>
       </div>
-      <div className="flex flex-1 items-start gap-4">
-        <div
-          ref={listRef}
-          className="h-[320px] flex-1 space-y-4 overflow-y-auto rounded-2xl border border-slate-700/70 bg-slate-900/40 p-4"
-        >
-        {selectedItems.length === 0 ? (
+      <div className="flex flex-1 items-center justify-center">
+        {cards.length === 0 ? (
           <p className="text-sm text-slate-400">
             No questions selected. Go back and choose some items.
           </p>
         ) : (
-          selectedItems.map(({ quizId, question, index, topic }) => {
-            const key = `${quizId}-${question?.id ?? index}`;
-            const front =
-              question?.type === "flashcard"
-                ? question.front
-                : question?.question;
-            const back =
-              question?.type === "flashcard"
-                ? question.back
-                : question?.explanation;
-            const isFlipped = Boolean(flipped[key]);
-            return (
+          <div className="w-full max-w-xl space-y-4">
+            <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-400">
+              Card {currentIndex + 1} of {cards.length}
+            </p>
+            <div
+              role="button"
+              tabIndex={0}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerLeave={handlePointerUp}
+              onClick={() => toggleFlip(cards[currentIndex].key)}
+              className="flashcard-flip relative h-[300px] w-full select-none rounded-[32px] shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
+            >
               <div
-                key={key}
-                className="rounded-2xl border border-slate-700/70 bg-slate-900/50 p-4"
+                className={`flashcard-inner ${
+                  flipped[cards[currentIndex].key] ? "is-flipped" : ""
+                }`}
               >
-                <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                  {topic || "Untitled topic"}
-                </p>
-                <div className="mt-2 rounded-xl border border-slate-800/70 bg-slate-950/60 px-4 py-6">
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                    {isFlipped ? "Answer" : "Question"}
+                <div className="flashcard-face flashcard-front">
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                    {cards[currentIndex].topic || "Untitled topic"}
                   </p>
-                  <p className="mt-2 text-lg font-semibold text-slate-50">
-                    {isFlipped
-                      ? back || "Answer unavailable"
-                      : front || "Untitled question"}
+                  <p className="mt-4 text-sm uppercase tracking-[0.3em] text-slate-500">
+                    Question
+                  </p>
+                  <p className="mt-6 text-2xl font-semibold">
+                    {cards[currentIndex].front || "Untitled question"}
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => toggleFlip(key)}
-                  className="mt-3 w-full rounded-xl border border-slate-700/80 bg-slate-900/60 px-4 py-2 text-sm font-semibold text-slate-50"
-                >
-                  {isFlipped ? "Show Question" : "Flip Card"}
-                </button>
+                <div className="flashcard-face flashcard-back">
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                    {cards[currentIndex].topic || "Untitled topic"}
+                  </p>
+                  <p className="mt-4 text-sm uppercase tracking-[0.3em] text-slate-600">
+                    Answer
+                  </p>
+                  <p className="mt-6 text-2xl font-semibold">
+                    {cards[currentIndex].back || "Answer unavailable"}
+                  </p>
+                </div>
               </div>
-            );
-          })
+              <p className="pointer-events-none absolute bottom-4 left-0 right-0 text-center text-xs text-slate-500">
+                Tap to flip • Swipe to navigate
+              </p>
+            </div>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={goToPrev}
+                disabled={currentIndex === 0}
+                className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-6 py-3 text-base font-semibold text-slate-50 disabled:opacity-40"
+              >
+                Previous
+              </button>
+              <button
+                type="button"
+                onClick={goToNext}
+                disabled={currentIndex === cards.length - 1}
+                className="flex-1 rounded-2xl bg-slate-50 px-6 py-3 text-base font-semibold text-slate-900 disabled:opacity-40"
+              >
+                Next
+              </button>
+            </div>
+          </div>
         )}
-        </div>
-        <div className="flex flex-col gap-4">
-          <button
-            type="button"
-            onClick={() => scrollList(-1)}
-            aria-label="Scroll up"
-            className="h-14 w-14 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
-          >
-            ↑
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollList(1)}
-            aria-label="Scroll down"
-            className="h-14 w-14 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
-          >
-            ↓
-          </button>
-        </div>
       </div>
     </div>
   );

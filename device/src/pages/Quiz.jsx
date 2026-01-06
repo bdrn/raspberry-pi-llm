@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Quiz = () => {
@@ -6,8 +6,8 @@ const Quiz = () => {
   const selectedItems = location.state?.selectedItems || [];
   const navigate = useNavigate();
   const [answers, setAnswers] = useState({});
-  const [submitted, setSubmitted] = useState(false);
-  const listRef = useRef(null);
+  const [revealed, setRevealed] = useState({});
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const questions = useMemo(() => {
     return selectedItems
@@ -22,8 +22,41 @@ const Quiz = () => {
       .filter(({ question }) => question);
   }, [selectedItems]);
 
-  const handleSelect = (key, optionIndex) => {
+  const shuffleOptions = (options) => {
+    const shuffled = [...options];
+    for (let i = shuffled.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  const currentOptions = useMemo(() => {
+    const options = Array.isArray(questions[currentIndex]?.question?.options)
+      ? questions[currentIndex].question.options.slice(0, 4)
+      : [];
+    const mapped = options.map((option, index) => ({
+      option,
+      index,
+    }));
+    return shuffleOptions(mapped);
+  }, [currentIndex, questions]);
+
+  const handleSelect = (key, optionIndex, allowsMultiple) => {
+    if (!allowsMultiple && revealed[key]) return;
+    if (allowsMultiple) {
+      setAnswers((prev) => {
+        const current = Array.isArray(prev[key]) ? prev[key] : [];
+        const next = current.includes(optionIndex)
+          ? current.filter((value) => value !== optionIndex)
+          : [...current, optionIndex];
+        return { ...prev, [key]: next };
+      });
+      setRevealed((prev) => ({ ...prev, [key]: true }));
+      return;
+    }
     setAnswers((prev) => ({ ...prev, [key]: optionIndex }));
+    setRevealed((prev) => ({ ...prev, [key]: true }));
   };
 
   const calculateScore = () => {
@@ -53,9 +86,12 @@ const Quiz = () => {
     navigate("/dashboard");
   };
 
-  const scrollList = (direction) => {
-    if (!listRef.current) return;
-    listRef.current.scrollBy({ top: direction * 140, behavior: "smooth" });
+  const goToNext = () => {
+    setCurrentIndex((prev) => Math.min(prev + 1, questions.length - 1));
+  };
+
+  const goToPrev = () => {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
   };
 
   return (
@@ -71,115 +107,112 @@ const Quiz = () => {
           Back
         </Link>
       </div>
-      <div className="flex flex-1 items-start gap-4">
-        <div
-          ref={listRef}
-          className="h-[320px] flex-1 space-y-4 overflow-y-auto rounded-2xl border border-slate-700/70 bg-slate-900/40 p-4"
-        >
-          {questions.length === 0 ? (
-            <p className="text-sm text-slate-400">
-              No questions selected. Go back and choose some items.
+      <div className="flex flex-1 items-center justify-center">
+        {questions.length === 0 ? (
+          <p className="text-sm text-slate-400">
+            No questions selected. Go back and choose some items.
+          </p>
+        ) : (
+          <div className="w-full max-w-xl space-y-5">
+            <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-400">
+              Question {currentIndex + 1} of {questions.length}
             </p>
-          ) : (
-            questions.map(({ key, question, topic }) => {
-              const prompt =
-                question?.type === "flashcard"
-                  ? question.front
-                  : question?.question;
-              const options = Array.isArray(question?.options)
-                ? question.options
-                : [];
-              const selectedIndex = answers[key];
-              const correctIndex = question?.correct_index;
-              return (
-                <div
-                  key={key}
-                  className="rounded-2xl border border-slate-700/70 bg-slate-900/50 p-4"
-                >
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                    {topic || "Untitled topic"}
-                  </p>
-                  <p className="mt-2 text-lg font-semibold text-slate-50">
-                    {prompt || "Untitled question"}
-                  </p>
-                  {options.length > 0 ? (
-                    <ul className="mt-3 space-y-2 text-sm text-slate-200">
-                      {options.map((option, optionIndex) => {
-                        const isSelected = selectedIndex === optionIndex;
-                        const isCorrect =
-                          submitted && optionIndex === correctIndex;
-                        const isWrong =
-                          submitted &&
-                          isSelected &&
-                          optionIndex !== correctIndex;
-                        return (
-                          <li
-                            key={`${key}-option-${optionIndex}`}
-                            className={`rounded-xl border px-3 py-2 ${
-                              isCorrect
-                                ? "border-emerald-400/80 bg-emerald-500/10"
-                                : isWrong
-                                ? "border-rose-400/80 bg-rose-500/10"
-                                : "border-slate-800/70 bg-slate-950/60"
-                            }`}
-                          >
-                            <label className="flex cursor-pointer items-center gap-3">
-                              <input
-                                type="radio"
-                                name={key}
-                                value={optionIndex}
-                                checked={isSelected}
-                                onChange={() => handleSelect(key, optionIndex)}
-                                className="h-4 w-4 accent-sky-400"
-                              />
-                              {option}
-                            </label>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  ) : (
-                    <p className="mt-2 text-sm text-slate-400">
-                      No multiple-choice options for this question.
-                    </p>
-                  )}
-                </div>
-              );
-            })
-          )}
-        </div>
-        <div className="flex flex-col gap-4">
-          <button
-            type="button"
-            onClick={() => scrollList(-1)}
-            aria-label="Scroll up"
-            className="h-14 w-14 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
-          >
-            ↑
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollList(1)}
-            aria-label="Scroll down"
-            className="h-14 w-14 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
-          >
-            ↓
-          </button>
-        </div>
+            <div className="rounded-[28px] border border-slate-700/80 bg-slate-950/80 p-6 text-center shadow-[0_18px_40px_rgba(0,0,0,0.45)]">
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                {questions[currentIndex].topic || "Untitled topic"}
+              </p>
+              <p className="mt-4 text-2xl font-semibold text-slate-50">
+                {questions[currentIndex].question?.type === "flashcard"
+                  ? questions[currentIndex].question?.front ||
+                    "Untitled question"
+                  : questions[currentIndex].question?.question ||
+                    "Untitled question"}
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {currentOptions.map(({ option, index: optionIndex }) => {
+                  const key = questions[currentIndex].key;
+                  const selectedValue = answers[key];
+                  const multiCorrect = Array.isArray(
+                    questions[currentIndex].question?.correct_indices
+                  );
+                  const correctIndices = multiCorrect
+                    ? questions[currentIndex].question.correct_indices
+                    : Number.isInteger(
+                        questions[currentIndex].question?.correct_index
+                      )
+                    ? [questions[currentIndex].question.correct_index]
+                    : [];
+                  const isRevealed = Boolean(revealed[key]);
+                  const isSelected = multiCorrect
+                    ? Array.isArray(selectedValue) &&
+                      selectedValue.includes(optionIndex)
+                    : selectedValue === optionIndex;
+                  const isCorrect =
+                    isRevealed && correctIndices.includes(optionIndex);
+                  const isWrong =
+                    isRevealed &&
+                    isSelected &&
+                    !correctIndices.includes(optionIndex);
+                  return (
+                    <button
+                      key={`${key}-option-${optionIndex}`}
+                      type="button"
+                      onClick={() =>
+                        handleSelect(key, optionIndex, multiCorrect)
+                      }
+                      className={`relative min-h-[72px] rounded-2xl border px-4 py-3 text-base font-semibold transition duration-200 ease-out active:scale-[0.98] ${
+                        isCorrect
+                          ? "border-emerald-500 bg-emerald-500 text-white shadow-[0_0_16px_rgba(16,185,129,0.35)]"
+                          : isWrong
+                          ? "border-rose-500 bg-rose-500 text-white shadow-[0_0_16px_rgba(244,63,94,0.35)]"
+                          : "border-slate-200 bg-slate-50 text-slate-900 hover:-translate-y-0.5"
+                      }`}
+                    >
+                      {isCorrect && (
+                        <span className="absolute left-3 top-2 text-sm">
+                          ✓
+                        </span>
+                      )}
+                      {isWrong && (
+                        <span className="absolute left-3 top-2 text-sm">
+                          ✕
+                        </span>
+                      )}
+                      {option}
+                    </button>
+                  );
+                })}
+            </div>
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={goToPrev}
+                disabled={currentIndex === 0}
+                aria-label="Previous question"
+                className="flex-1 rounded-2xl border border-slate-800/80 bg-slate-950 px-6 py-3 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                onClick={goToNext}
+                disabled={currentIndex === questions.length - 1}
+                aria-label="Next question"
+                className="flex-1 rounded-2xl border border-slate-800/80 bg-slate-950 px-6 py-3 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
+              >
+                →
+              </button>
+            </div>
+          </div>
+        )}
       </div>
       {questions.length > 0 && (
         <div className="flex gap-4">
           <button
             type="button"
-            onClick={() => setSubmitted(true)}
-            className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-6 py-3 text-lg font-semibold text-slate-50"
-          >
-            Check Answers
-          </button>
-          <button
-            type="button"
             onClick={handleFinish}
-            className="flex-1 rounded-2xl bg-slate-50 px-6 py-3 text-lg font-semibold text-slate-900"
+            className="flex-1 rounded-2xl bg-slate-950 px-6 py-3 text-lg font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98]"
           >
             Finish Quiz
           </button>
