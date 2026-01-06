@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Start from "./pages/Start";
-import PairDevice from "./pages/PairDevice";
 import Quiz from "./pages/Quiz";
 import Flashcards from "./pages/Flashcards";
 import Dashboard from "./pages/Dashboard";
@@ -15,7 +14,6 @@ function App() {
           <div className="w-full">
             <Routes>
               <Route path="/" element={<Start />} />
-              <Route path="/pair" element={<PairDevice />} />
               <Route path="/home" element={<Home />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/flashcards" element={<Flashcards />} />

@@ -219,20 +219,3 @@
   color: #0369a1;
   font-weight: 500;
 }
-
-/* Pair device page */
-.pair-page {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.pair-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.pair-text {
-  font-size: 0.95rem;
-  color: #6b7280;
-}

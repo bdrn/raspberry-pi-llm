@@ -33,19 +33,6 @@ const Navbar = () => {
               <span className="absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full bg-sky-400" />
             )}
           </Link>
-          <Link
-            to="/pair"
-            className={`${linkBase} ${
-              isActive("/pair")
-                ? "bg-slate-900 text-slate-50 shadow-sm"
-                : "text-slate-300 hover:bg-slate-800/80"
-            }`}
-          >
-            Pair device
-            {isActive("/pair") && (
-              <span className="absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full bg-sky-400" />
-            )}
-          </Link>
         </nav>
       </div>
     </header>

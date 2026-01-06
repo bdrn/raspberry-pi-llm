@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import api from "../api";
 
 const Quiz = () => {
   const location = useLocation();
@@ -8,6 +9,7 @@ const Quiz = () => {
   const [answers, setAnswers] = useState({});
   const [revealed, setRevealed] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [latestScore, setLatestScore] = useState(null);
 
   const questions = useMemo(() => {
     return selectedItems
@@ -103,7 +105,21 @@ const Quiz = () => {
     const history = existing ? JSON.parse(existing) : [];
     history.push(payload);
     localStorage.setItem("studybuddy-quiz-history", JSON.stringify(history));
-    navigate("/dashboard");
+    setLatestScore(payload);
+
+    try {
+      await api.post(
+        "/progress",
+        {
+          score,
+          total,
+          per_topic: perTopic,
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
+    } catch (error) {
+      console.error("Failed to sync progress:", error);
+    }
   };
 
   const goToNext = () => {
@@ -227,16 +243,30 @@ const Quiz = () => {
           </div>
         )}
       </div>
-      {questions.length > 0 && (
-        <div className="flex gap-4">
-          <button
-            type="button"
-            onClick={handleFinish}
-            className="flex-1 rounded-2xl bg-slate-950 px-6 py-2 text-xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98]"
-          >
-            Finish Quiz
-          </button>
+      {latestScore ? (
+        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 px-4 py-3 text-center">
+          <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
+            Latest Quiz Score
+          </p>
+          <p className="mt-2 text-4xl font-semibold text-slate-50">
+            {latestScore.score} / {latestScore.total}
+          </p>
+          <p className="mt-2 text-sm text-slate-400">
+            Completed {new Date(latestScore.completedAt).toLocaleString()}
+          </p>
         </div>
+      ) : (
+        questions.length > 0 && (
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={handleFinish}
+              className="flex-1 rounded-2xl bg-slate-950 px-6 py-2 text-xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98]"
+            >
+              Finish Quiz
+            </button>
+          </div>
+        )
       )}
     </div>
   );

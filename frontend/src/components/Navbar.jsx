@@ -34,15 +34,15 @@ const Navbar = () => {
             )}
           </Link>
           <Link
-            to="/pair"
+            to="/topics"
             className={`${linkBase} ${
-              isActive("/pair")
+              isActive("/topics")
                 ? "bg-slate-900 text-slate-50 shadow-sm"
                 : "text-slate-300 hover:bg-slate-800/80"
             }`}
           >
-            Pair device
-            {isActive("/pair") && (
+            Topics
+            {isActive("/topics") && (
               <span className="absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full bg-sky-400" />
             )}
           </Link>

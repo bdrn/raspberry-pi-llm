@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import PairDevice from "./pages/PairDevice";
+import Topics from "./pages/Topics";
 import "./App.css";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
           <div className="w-full">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/pair" element={<PairDevice />} />
+              <Route path="/topics" element={<Topics />} />
             </Routes>
           </div>
         </main>
