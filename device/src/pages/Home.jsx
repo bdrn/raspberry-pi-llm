@@ -109,18 +109,18 @@ const Home = () => {
   }, [selectedQuestions, topics]);
 
   return (
-    <div className="flex min-h-[480px] flex-col items-center justify-center gap-6 px-6 py-8">
-      <h1 className="text-center text-3xl font-semibold tracking-tight text-slate-50">
+    <div className="flex min-h-[480px] flex-col items-center justify-center gap-4 px-4 py-4">
+      <h1 className="text-center text-4xl font-semibold tracking-tight text-slate-50">
         What should we study now?
       </h1>
-      <div className="w-full max-w-2xl space-y-4">
-        <div className="flex items-center gap-4">
+      <div className="w-full max-w-2xl space-y-3">
+        <div className="flex items-center gap-3">
           <div
             ref={listRef}
-            className="h-[320px] flex-1 space-y-6 overflow-y-auto rounded-2xl border border-slate-700/60 bg-slate-900/40 p-4"
+            className="h-[280px] flex-1 space-y-5 overflow-y-auto rounded-2xl border border-slate-700/60 bg-slate-900/40 p-4"
           >
             {topics.length === 0 ? (
-              <p className="text-center text-sm text-slate-400">
+              <p className="text-center text-base text-slate-400">
                 No topics available yet.
               </p>
             ) : (
@@ -129,11 +129,11 @@ const Home = () => {
                   key={topic}
                   className="space-y-3 rounded-2xl bg-slate-950/60 p-4"
                 >
-                  <h2 className="text-lg font-semibold text-slate-100">
+                  <h2 className="text-xl font-semibold text-slate-100">
                     {topic}
                   </h2>
                   {items.length === 0 ? (
-                    <p className="text-sm text-slate-400">
+                    <p className="text-base text-slate-400">
                       No questions found for this topic.
                     </p>
                   ) : (
@@ -151,15 +151,15 @@ const Home = () => {
                               onChange={() => toggleQuestion(key)}
                               className="mt-1 h-5 w-5 rounded border-slate-500 bg-slate-900 text-slate-50 accent-sky-400"
                             />
-                            <div className="space-y-1">
-                              <p className="text-sm font-medium">
-                                {getQuestionText(question)}
-                              </p>
-                              <p className="text-xs text-slate-400">
-                                {getAnswerText(question)}
-                              </p>
-                            </div>
-                          </label>
+                          <div className="space-y-1">
+                            <p className="text-base font-medium">
+                              {getQuestionText(question)}
+                            </p>
+                            <p className="text-sm text-slate-400">
+                              {getAnswerText(question)}
+                            </p>
+                          </div>
+                        </label>
                         );
                       })}
                     </div>
@@ -168,12 +168,12 @@ const Home = () => {
               ))
             )}
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3">
             <button
               type="button"
               onClick={() => scrollList(-1)}
               aria-label="Scroll up"
-              className="h-16 w-16 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
+              className="h-12 w-12 rounded-2xl border border-slate-600/70 text-xl text-slate-50"
             >
               ↑
             </button>
@@ -181,24 +181,24 @@ const Home = () => {
               type="button"
               onClick={() => scrollList(1)}
               aria-label="Scroll down"
-              className="h-16 w-16 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
+              className="h-12 w-12 rounded-2xl border border-slate-600/70 text-xl text-slate-50"
             >
               ↓
             </button>
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-3">
           <Link
             to="/flashcards"
             state={{ selectedItems }}
-            className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-6 py-4 text-center text-xl font-semibold text-slate-50"
+            className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-4 py-3 text-center text-2xl font-semibold text-slate-50"
           >
             Flashcards
           </Link>
           <Link
             to="/quiz"
             state={{ selectedItems }}
-            className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-6 py-4 text-center text-xl font-semibold text-slate-50"
+            className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-4 py-3 text-center text-2xl font-semibold text-slate-50"
           >
             Quiz
           </Link>

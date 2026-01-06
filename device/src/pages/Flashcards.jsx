@@ -66,9 +66,9 @@ const Flashcards = () => {
   };
 
   return (
-    <div className="flex min-h-[480px] flex-col gap-4 px-6 py-6">
+    <div className="flex min-h-[480px] flex-col gap-3 px-4 py-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-50">
+        <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
           Flashcards
         </h1>
         <Link
@@ -84,7 +84,7 @@ const Flashcards = () => {
             No questions selected. Go back and choose some items.
           </p>
         ) : (
-          <div className="w-full max-w-xl space-y-4">
+          <div className="w-full max-w-xl space-y-3">
             <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-400">
               Card {currentIndex + 1} of {cards.length}
             </p>
@@ -96,7 +96,7 @@ const Flashcards = () => {
               onPointerUp={handlePointerUp}
               onPointerLeave={handlePointerUp}
               onClick={() => toggleFlip(cards[currentIndex].key)}
-              className="flashcard-flip relative h-[300px] w-full select-none rounded-[32px] shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
+              className="flashcard-flip relative h-[260px] w-full select-none rounded-[32px] shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
             >
               <div
                 className={`flashcard-inner ${
@@ -110,7 +110,7 @@ const Flashcards = () => {
                   <p className="mt-4 text-sm uppercase tracking-[0.3em] text-slate-500">
                     Question
                   </p>
-                  <p className="mt-6 text-2xl font-semibold">
+                  <p className="mt-5 text-3xl font-semibold">
                     {cards[currentIndex].front || "Untitled question"}
                   </p>
                 </div>
@@ -121,7 +121,7 @@ const Flashcards = () => {
                   <p className="mt-4 text-sm uppercase tracking-[0.3em] text-slate-600">
                     Answer
                   </p>
-                  <p className="mt-6 text-2xl font-semibold">
+                  <p className="mt-5 text-3xl font-semibold">
                     {cards[currentIndex].back || "Answer unavailable"}
                   </p>
                 </div>
@@ -130,12 +130,12 @@ const Flashcards = () => {
                 Tap to flip • Swipe to navigate
               </p>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               <button
                 type="button"
                 onClick={goToPrev}
                 disabled={currentIndex === 0}
-                className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-6 py-3 text-base font-semibold text-slate-50 disabled:opacity-40"
+                className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-4 py-2 text-lg font-semibold text-slate-50 disabled:opacity-40"
               >
                 Previous
               </button>
@@ -143,7 +143,7 @@ const Flashcards = () => {
                 type="button"
                 onClick={goToNext}
                 disabled={currentIndex === cards.length - 1}
-                className="flex-1 rounded-2xl bg-slate-50 px-6 py-3 text-base font-semibold text-slate-900 disabled:opacity-40"
+                className="flex-1 rounded-2xl bg-slate-50 px-4 py-2 text-lg font-semibold text-slate-900 disabled:opacity-40"
               >
                 Next
               </button>

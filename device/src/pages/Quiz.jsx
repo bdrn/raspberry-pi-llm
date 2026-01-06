@@ -95,9 +95,9 @@ const Quiz = () => {
   };
 
   return (
-    <div className="flex min-h-[480px] flex-col gap-4 px-6 py-6">
+    <div className="flex min-h-[480px] flex-col gap-3 px-4 py-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-50">
+        <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
           Quiz
         </h1>
         <Link
@@ -113,15 +113,15 @@ const Quiz = () => {
             No questions selected. Go back and choose some items.
           </p>
         ) : (
-          <div className="w-full max-w-xl space-y-5">
+          <div className="w-full max-w-xl space-y-4">
             <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-400">
               Question {currentIndex + 1} of {questions.length}
             </p>
-            <div className="rounded-[28px] border border-slate-700/80 bg-slate-950/80 p-6 text-center shadow-[0_18px_40px_rgba(0,0,0,0.45)]">
+            <div className="rounded-[28px] border border-slate-700/80 bg-slate-950/80 p-4 text-center shadow-[0_18px_40px_rgba(0,0,0,0.45)]">
               <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
                 {questions[currentIndex].topic || "Untitled topic"}
               </p>
-              <p className="mt-4 text-2xl font-semibold text-slate-50">
+              <p className="mt-3 text-3xl font-semibold text-slate-50">
                 {questions[currentIndex].question?.type === "flashcard"
                   ? questions[currentIndex].question?.front ||
                     "Untitled question"
@@ -161,7 +161,7 @@ const Quiz = () => {
                       onClick={() =>
                         handleSelect(key, optionIndex, multiCorrect)
                       }
-                      className={`relative min-h-[72px] rounded-2xl border px-4 py-3 text-base font-semibold transition duration-200 ease-out active:scale-[0.98] ${
+                      className={`relative min-h-[64px] rounded-2xl border px-4 py-3 text-lg font-semibold transition duration-200 ease-out active:scale-[0.98] ${
                         isCorrect
                           ? "border-emerald-500 bg-emerald-500 text-white shadow-[0_0_16px_rgba(16,185,129,0.35)]"
                           : isWrong
@@ -170,12 +170,12 @@ const Quiz = () => {
                       }`}
                     >
                       {isCorrect && (
-                        <span className="absolute left-3 top-2 text-sm">
+                        <span className="absolute left-3 top-2 text-base">
                           ✓
                         </span>
                       )}
                       {isWrong && (
-                        <span className="absolute left-3 top-2 text-sm">
+                        <span className="absolute left-3 top-2 text-base">
                           ✕
                         </span>
                       )}
@@ -190,7 +190,7 @@ const Quiz = () => {
                 onClick={goToPrev}
                 disabled={currentIndex === 0}
                 aria-label="Previous question"
-                className="flex-1 rounded-2xl border border-slate-800/80 bg-slate-950 px-6 py-3 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
+                className="flex-1 rounded-2xl border border-slate-800/80 bg-slate-950 px-6 py-2 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
               >
                 ←
               </button>
@@ -199,7 +199,7 @@ const Quiz = () => {
                 onClick={goToNext}
                 disabled={currentIndex === questions.length - 1}
                 aria-label="Next question"
-                className="flex-1 rounded-2xl border border-slate-800/80 bg-slate-950 px-6 py-3 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
+                className="flex-1 rounded-2xl border border-slate-800/80 bg-slate-950 px-6 py-2 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
               >
                 →
               </button>
@@ -212,7 +212,7 @@ const Quiz = () => {
           <button
             type="button"
             onClick={handleFinish}
-            className="flex-1 rounded-2xl bg-slate-950 px-6 py-3 text-lg font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98]"
+            className="flex-1 rounded-2xl bg-slate-950 px-6 py-2 text-xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98]"
           >
             Finish Quiz
           </button>

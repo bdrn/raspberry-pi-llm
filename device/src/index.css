@@ -49,7 +49,7 @@ body {
   backface-visibility: hidden;
   border-radius: 32px;
   border: 1px solid rgba(51, 65, 85, 0.8);
-  padding: 32px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;

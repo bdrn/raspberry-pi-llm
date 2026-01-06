@@ -20,7 +20,7 @@ const Dashboard = () => {
   });
 
   const chartWidth = 320;
-  const chartHeight = 140;
+  const chartHeight = 120;
   const chartPadding = 12;
 
   const path =
@@ -47,9 +47,9 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex min-h-[480px] flex-col gap-4 px-6 py-6">
+    <div className="flex min-h-[480px] flex-col gap-3 px-4 py-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-50">
+        <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
           Dashboard
         </h1>
         <Link
@@ -60,10 +60,10 @@ const Dashboard = () => {
         </Link>
       </div>
 
-      <div className="flex flex-1 items-start gap-4">
+      <div className="flex flex-1 items-start gap-3">
         <div
           ref={listRef}
-          className="h-[320px] flex-1 space-y-4 overflow-y-auto rounded-2xl border border-slate-700/70 bg-slate-900/50 p-4"
+          className="h-[280px] flex-1 space-y-3 overflow-y-auto rounded-2xl border border-slate-700/70 bg-slate-900/50 p-4"
         >
           <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 text-center">
             {latest ? (
@@ -71,7 +71,7 @@ const Dashboard = () => {
                 <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
                   Latest Quiz Score
                 </p>
-                <p className="mt-3 text-4xl font-semibold text-slate-50">
+                <p className="mt-2 text-5xl font-semibold text-slate-50">
                   {latest.score} / {latest.total}
                 </p>
                 <p className="mt-2 text-sm text-slate-400">
@@ -79,7 +79,7 @@ const Dashboard = () => {
                 </p>
               </>
             ) : (
-              <p className="text-sm text-slate-400">
+              <p className="text-base text-slate-400">
                 No quiz results yet. Complete a quiz to see your score.
               </p>
             )}
@@ -90,19 +90,19 @@ const Dashboard = () => {
               Progress Over Time
             </p>
             {points.length === 0 ? (
-              <p className="mt-4 text-sm text-slate-400">
+              <p className="mt-3 text-base text-slate-400">
                 No history yet. Finish quizzes to build your progress graph.
               </p>
             ) : (
-              <div className="mt-4 flex flex-col gap-4">
+              <div className="mt-3 flex flex-col gap-3">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-[140px] flex-col justify-between text-xs text-slate-400">
+                  <div className="flex h-[120px] flex-col justify-between text-xs text-slate-400">
                     <span>100%</span>
                     <span>0%</span>
                   </div>
                   <svg
                     width={chartWidth}
-                    height={chartHeight}
+                    height={120}
                     viewBox={`0 0 ${chartWidth} ${chartHeight}`}
                     className="overflow-visible"
                   >
@@ -135,12 +135,12 @@ const Dashboard = () => {
                     })}
                   </svg>
                 </div>
-                <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-slate-400">
+                <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-400">
                   {points.map((point, index) => (
                     <span key={`label-${index}`}>{point.label}</span>
                   ))}
                 </div>
-                <p className="text-xs text-slate-400">
+                <p className="text-sm text-slate-400">
                   {points.length} sessions • Average{" "}
                   {Math.round(
                     (points.reduce((sum, point) => sum + point.y, 0) /
