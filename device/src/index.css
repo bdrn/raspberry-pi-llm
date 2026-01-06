@@ -15,6 +15,17 @@ body {
   overflow: hidden;
 }
 
+html,
+body {
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar,
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     "Segoe UI", sans-serif;
@@ -73,6 +84,15 @@ body {
   min-height: 100vh;
   height: 100%;
   overflow: hidden;
+}
+
+.scroll-hidden {
+  scrollbar-width: none;
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 a {

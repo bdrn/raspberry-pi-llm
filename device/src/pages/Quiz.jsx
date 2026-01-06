@@ -59,24 +59,44 @@ const Quiz = () => {
     setRevealed((prev) => ({ ...prev, [key]: true }));
   };
 
+  const isQuestionCorrect = (key, question) => {
+    if (!question) return false;
+    if (Array.isArray(question.correct_indices)) {
+      const selected = Array.isArray(answers[key]) ? answers[key] : [];
+      const correctSet = new Set(question.correct_indices);
+      if (selected.length !== correctSet.size) return false;
+      return selected.every((value) => correctSet.has(value));
+    }
+    if (Number.isInteger(question.correct_index)) {
+      return answers[key] === question.correct_index;
+    }
+    return false;
+  };
+
   const calculateScore = () => {
     return questions.reduce((total, { key, question }) => {
-      if (
-        Number.isInteger(question?.correct_index) &&
-        answers[key] === question.correct_index
-      ) {
-        return total + 1;
-      }
-      return total;
+      return total + (isQuestionCorrect(key, question) ? 1 : 0);
     }, 0);
   };
 
   const handleFinish = () => {
     const score = calculateScore();
     const total = questions.length;
+    const perTopic = questions.reduce((acc, { key, question, topic }) => {
+      const name = topic || "Untitled topic";
+      if (!acc[name]) {
+        acc[name] = { correct: 0, total: 0 };
+      }
+      acc[name].total += 1;
+      if (isQuestionCorrect(key, question)) {
+        acc[name].correct += 1;
+      }
+      return acc;
+    }, {});
     const payload = {
       score,
       total,
+      perTopic,
       completedAt: new Date().toISOString(),
     };
     const existing = localStorage.getItem("studybuddy-quiz-history");

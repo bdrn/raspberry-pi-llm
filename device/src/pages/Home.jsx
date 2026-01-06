@@ -117,7 +117,7 @@ const Home = () => {
         <div className="flex items-center gap-3">
           <div
             ref={listRef}
-            className="h-[280px] flex-1 space-y-5 overflow-y-auto rounded-2xl border border-slate-700/60 bg-slate-900/40 p-4"
+            className="scroll-hidden h-[280px] flex-1 space-y-5 overflow-y-auto rounded-2xl border border-slate-700/60 bg-slate-900/40 p-4"
           >
             {topics.length === 0 ? (
               <p className="text-center text-base text-slate-400">

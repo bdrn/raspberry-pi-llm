@@ -9,6 +9,35 @@ const Dashboard = () => {
     (a, b) => new Date(a.completedAt) - new Date(b.completedAt)
   );
   const latest = sortedHistory[sortedHistory.length - 1];
+  const overall = sortedHistory.reduce(
+    (acc, entry) => {
+      acc.correct += entry.score || 0;
+      acc.total += entry.total || 0;
+      return acc;
+    },
+    { correct: 0, total: 0 }
+  );
+
+  const perTopicTotals = sortedHistory.reduce((acc, entry) => {
+    if (!entry.perTopic) return acc;
+    Object.entries(entry.perTopic).forEach(([topic, stats]) => {
+      if (!acc[topic]) {
+        acc[topic] = { correct: 0, total: 0 };
+      }
+      acc[topic].correct += stats.correct || 0;
+      acc[topic].total += stats.total || 0;
+    });
+    return acc;
+  }, {});
+
+  const perTopicList = Object.entries(perTopicTotals).map(
+    ([topic, stats]) => ({
+      topic,
+      correct: stats.correct,
+      total: stats.total,
+      percent: stats.total ? Math.round((stats.correct / stats.total) * 100) : 0,
+    })
+  );
 
   const points = sortedHistory.map((entry, index) => {
     const percent = entry.total ? entry.score / entry.total : 0;
@@ -63,7 +92,7 @@ const Dashboard = () => {
       <div className="flex flex-1 items-start gap-3">
         <div
           ref={listRef}
-          className="h-[280px] flex-1 space-y-3 overflow-y-auto rounded-2xl border border-slate-700/70 bg-slate-900/50 p-4"
+          className="scroll-hidden h-[280px] flex-1 space-y-3 overflow-y-auto rounded-2xl border border-slate-700/70 bg-slate-900/50 p-4"
         >
           <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 text-center">
             {latest ? (
@@ -83,6 +112,20 @@ const Dashboard = () => {
                 No quiz results yet. Complete a quiz to see your score.
               </p>
             )}
+          </div>
+
+          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 text-center">
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
+              Overall Progress
+            </p>
+            <p className="mt-2 text-4xl font-semibold text-slate-50">
+              {overall.correct} / {overall.total}
+            </p>
+            <p className="mt-1 text-sm text-slate-400">
+              {overall.total
+                ? `${Math.round((overall.correct / overall.total) * 100)}% accuracy`
+                : "No attempts yet"}
+            </p>
           </div>
 
           <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4">
@@ -149,6 +192,33 @@ const Dashboard = () => {
                   )}
                   %
                 </p>
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4">
+            <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
+              Progress By Topic
+            </p>
+            {perTopicList.length === 0 ? (
+              <p className="mt-3 text-base text-slate-400">
+                No topic stats yet. Finish quizzes to see topic progress.
+              </p>
+            ) : (
+              <div className="mt-3 space-y-3">
+                {perTopicList.map((topic) => (
+                  <div
+                    key={topic.topic}
+                    className="rounded-xl border border-slate-800/70 bg-slate-950/60 px-4 py-3"
+                  >
+                    <p className="text-base font-semibold text-slate-100">
+                      {topic.topic}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-400">
+                      {topic.correct}/{topic.total} correct • {topic.percent}%
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
           </div>
