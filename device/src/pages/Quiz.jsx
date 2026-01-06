@@ -137,7 +137,7 @@ const Quiz = () => {
             <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-400">
               Question {currentIndex + 1} of {questions.length}
             </p>
-            <div className="rounded-[28px] border border-slate-700/80 bg-slate-950/80 p-4 text-center shadow-[0_18px_40px_rgba(0,0,0,0.45)]">
+            <div className="rounded-[28px] border border-slate-700/80 bg-slate-950/80 p-3 text-center shadow-[0_18px_40px_rgba(0,0,0,0.45)]">
               <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
                 {questions[currentIndex].topic || "Untitled topic"}
               </p>

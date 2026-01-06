@@ -1,8 +1,6 @@
-import { useRef } from "react";
 import { Link } from "react-router-dom";
 
 const Dashboard = () => {
-  const listRef = useRef(null);
   const stored = localStorage.getItem("studybuddy-quiz-history");
   const history = stored ? JSON.parse(stored) : [];
   const sortedHistory = [...history].sort(
@@ -70,11 +68,6 @@ const Dashboard = () => {
           .join(" ")
       : "";
 
-  const scrollList = (direction) => {
-    if (!listRef.current) return;
-    listRef.current.scrollBy({ top: direction * 140, behavior: "smooth" });
-  };
-
   return (
     <div className="flex h-[100dvh] flex-col gap-3 px-4 py-4 overflow-hidden">
       <div className="flex items-center justify-between">
@@ -90,11 +83,8 @@ const Dashboard = () => {
       </div>
 
       <div className="flex flex-1 items-start gap-3">
-        <div
-          ref={listRef}
-          className="scroll-hidden h-[280px] flex-1 space-y-3 overflow-y-auto rounded-2xl border border-slate-700/70 bg-slate-900/50 p-4"
-        >
-          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 text-center">
+        <div className="scroll-hidden h-[280px] w-full space-y-3 overflow-y-auto rounded-2xl border border-slate-700/70 bg-slate-900/50 p-2">
+          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-3 text-center">
             {latest ? (
               <>
                 <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
@@ -114,7 +104,7 @@ const Dashboard = () => {
             )}
           </div>
 
-          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4 text-center">
+          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-3 text-center">
             <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
               Overall Progress
             </p>
@@ -128,7 +118,7 @@ const Dashboard = () => {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4">
+          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-3">
             <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
               Progress Over Time
             </p>
@@ -196,7 +186,7 @@ const Dashboard = () => {
             )}
           </div>
 
-          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-4">
+          <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 p-3">
             <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
               Progress By Topic
             </p>
@@ -209,7 +199,7 @@ const Dashboard = () => {
                 {perTopicList.map((topic) => (
                   <div
                     key={topic.topic}
-                    className="rounded-xl border border-slate-800/70 bg-slate-950/60 px-4 py-3"
+                    className="rounded-xl border border-slate-800/70 bg-slate-950/60 px-3 py-2"
                   >
                     <p className="text-base font-semibold text-slate-100">
                       {topic.topic}
@@ -222,24 +212,6 @@ const Dashboard = () => {
               </div>
             )}
           </div>
-        </div>
-        <div className="flex flex-col gap-4">
-          <button
-            type="button"
-            onClick={() => scrollList(-1)}
-            aria-label="Scroll up"
-            className="h-14 w-14 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
-          >
-            ↑
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollList(1)}
-            aria-label="Scroll down"
-            className="h-14 w-14 rounded-2xl border border-slate-600/70 text-2xl text-slate-50"
-          >
-            ↓
-          </button>
         </div>
       </div>
     </div>
