@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex min-h-[480px] flex-col justify-center gap-6 px-4 py-4">
+    <div className="flex h-[100dvh] flex-col justify-center gap-6 px-4 py-4 overflow-hidden">
       <header className="space-y-3">
         <h1 className="text-5xl font-semibold tracking-tight text-slate-50">
           Hey, buddy!

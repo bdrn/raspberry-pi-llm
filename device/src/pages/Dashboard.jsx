@@ -47,7 +47,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex min-h-[480px] flex-col gap-3 px-4 py-4">
+    <div className="flex h-[100dvh] flex-col gap-3 px-4 py-4 overflow-hidden">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
           Dashboard

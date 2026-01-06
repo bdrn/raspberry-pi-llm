@@ -109,7 +109,7 @@ const Home = () => {
   }, [selectedQuestions, topics]);
 
   return (
-    <div className="flex min-h-[480px] flex-col items-center justify-center gap-4 px-4 py-4">
+    <div className="flex h-[100dvh] flex-col items-center justify-center gap-4 px-4 py-4 overflow-hidden">
       <h1 className="text-center text-4xl font-semibold tracking-tight text-slate-50">
         What should we study now?
       </h1>
