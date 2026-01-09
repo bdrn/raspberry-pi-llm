@@ -81,7 +81,7 @@ const Quiz = () => {
     }, 0);
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     const score = calculateScore();
     const total = questions.length;
     const perTopic = questions.reduce((acc, { key, question, topic }) => {
