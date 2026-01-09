@@ -1,7 +1,8 @@
 import QRCode from "react-qr-code";
 
 const buildSettingsUrl = () => {
-  const dashboardBase = import.meta.env.VITE_DESKTOP_FRONTEND_URL;
+  const dashboardBase =
+    import.meta.env.VITE_DESKTOP_FRONTEND_URL || "http://172.20.10.2:5173";
   const deviceApi =
     import.meta.env.VITE_DEVICE_API_URL ||
     (typeof window !== "undefined"
