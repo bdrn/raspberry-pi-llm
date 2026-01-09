@@ -10,6 +10,14 @@ load_dotenv(env_path)
 
 from services.pdf_parser import extract_text_from_pdf
 from services.llm_generator import generate_quiz_from_text
+from services.wifi_manager import (
+    WifiSetupError,
+    connect_wifi,
+    get_active_wifi,
+    get_connectivity,
+    list_networks,
+    wifi_setup_enabled,
+)
 
 from database.models import db, Quiz, QuizSession
 
@@ -223,6 +231,58 @@ def remove_topic():
 
     db.session.commit()
     return jsonify({"updated": updated}), 200
+
+
+@app.route('/api/wifi/status', methods=['GET'])
+def wifi_status():
+    if not wifi_setup_enabled():
+        return jsonify({"error": "Wi-Fi setup is disabled."}), 403
+
+    try:
+        wifi = get_active_wifi()
+        connectivity = get_connectivity()
+        return jsonify(
+            {
+                "wifi": {
+                    **wifi,
+                    "connectivity": connectivity,
+                    "ok": bool(wifi.get("ssid")) and connectivity == "full",
+                }
+            }
+        ), 200
+    except WifiSetupError as error:
+        return jsonify({"error": str(error)}), 500
+
+
+@app.route('/api/wifi/networks', methods=['GET'])
+def wifi_networks():
+    if not wifi_setup_enabled():
+        return jsonify({"error": "Wi-Fi setup is disabled."}), 403
+
+    try:
+        networks = list_networks()
+        return jsonify({"networks": networks}), 200
+    except WifiSetupError as error:
+        return jsonify({"error": str(error)}), 500
+
+
+@app.route('/api/wifi/connect', methods=['POST'])
+def wifi_connect():
+    if not wifi_setup_enabled():
+        return jsonify({"error": "Wi-Fi setup is disabled."}), 403
+
+    data = request.get_json(silent=True) or {}
+    ssid = (data.get("ssid") or "").strip()
+    password = data.get("password") or ""
+
+    if not ssid:
+        return jsonify({"error": "ssid is required"}), 400
+
+    try:
+        result = connect_wifi(ssid, password=password)
+        return jsonify(result), 200
+    except WifiSetupError as error:
+        return jsonify({"error": str(error)}), 500
 
 
 if __name__ == "__main__":
