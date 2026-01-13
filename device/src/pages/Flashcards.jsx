@@ -1,5 +1,6 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { recordStreakUsage } from "../lib/streak";
 
 const Flashcards = () => {
   const location = useLocation();
@@ -32,6 +33,12 @@ const Flashcards = () => {
       };
     });
   }, [selectedItems]);
+
+  useEffect(() => {
+    if (cards.length > 0) {
+      recordStreakUsage();
+    }
+  }, [cards.length]);
 
   const goToNext = () => {
     setCurrentIndex((prev) => Math.min(prev + 1, cards.length - 1));
@@ -66,14 +73,14 @@ const Flashcards = () => {
   };
 
   return (
-    <div className="flex h-[100dvh] flex-col gap-3 px-4 py-4 overflow-hidden">
+    <div className="flex h-full flex-col gap-3 px-4 py-4 overflow-hidden">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
+        <h1 className="game-title text-3xl font-semibold text-slate-50">
           Flashcards
         </h1>
         <Link
           to="/home"
-          className="rounded-full border border-slate-600/70 px-4 py-2 text-sm text-slate-100"
+          className="game-button game-button-secondary rounded-full px-4 py-2 text-xs text-slate-100"
         >
           Back
         </Link>
@@ -96,7 +103,7 @@ const Flashcards = () => {
               onPointerUp={handlePointerUp}
               onPointerLeave={handlePointerUp}
               onClick={() => toggleFlip(cards[currentIndex].key)}
-              className="flashcard-flip relative h-[260px] w-full select-none rounded-[32px] shadow-[0_20px_40px_rgba(0,0,0,0.5)]"
+              className="flashcard-flip game-panel float-slow relative h-[260px] w-full select-none rounded-[32px]"
             >
               <div
                 className={`flashcard-inner ${
@@ -135,7 +142,7 @@ const Flashcards = () => {
                 type="button"
                 onClick={goToPrev}
                 disabled={currentIndex === 0}
-                className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-4 py-2 text-lg font-semibold text-slate-50 disabled:opacity-40"
+                className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-2 text-base font-semibold text-slate-50 disabled:opacity-40"
               >
                 Previous
               </button>
@@ -143,7 +150,7 @@ const Flashcards = () => {
                 type="button"
                 onClick={goToNext}
                 disabled={currentIndex === cards.length - 1}
-                className="flex-1 rounded-2xl bg-slate-50 px-4 py-2 text-lg font-semibold text-slate-900 disabled:opacity-40"
+                className="game-button game-button-primary flex-1 rounded-2xl px-4 py-2 text-base font-semibold disabled:opacity-40"
               >
                 Next
               </button>

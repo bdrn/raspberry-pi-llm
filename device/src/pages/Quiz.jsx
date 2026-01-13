@@ -1,11 +1,11 @@
-import { useMemo, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import api from "../api";
+import { recordStreakUsage } from "../lib/streak";
 
 const Quiz = () => {
   const location = useLocation();
   const selectedItems = location.state?.selectedItems || [];
-  const navigate = useNavigate();
   const [answers, setAnswers] = useState({});
   const [revealed, setRevealed] = useState({});
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,6 +23,12 @@ const Quiz = () => {
       })
       .filter(({ question }) => question);
   }, [selectedItems]);
+
+  useEffect(() => {
+    if (questions.length > 0) {
+      recordStreakUsage();
+    }
+  }, [questions.length]);
 
   const shuffleOptions = (options) => {
     const shuffled = [...options];
@@ -131,14 +137,14 @@ const Quiz = () => {
   };
 
   return (
-    <div className="flex h-[100dvh] flex-col gap-3 px-4 py-4 overflow-hidden">
+    <div className="flex h-full flex-col gap-3 px-4 py-4 overflow-hidden">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
+        <h1 className="game-title text-3xl font-semibold text-slate-50">
           Quiz
         </h1>
         <Link
           to="/home"
-          className="rounded-full border border-slate-600/70 px-4 py-2 text-sm text-slate-100"
+          className="game-button game-button-secondary rounded-full px-4 py-2 text-xs text-slate-100"
         >
           Back
         </Link>
@@ -153,11 +159,11 @@ const Quiz = () => {
             <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-400">
               Question {currentIndex + 1} of {questions.length}
             </p>
-            <div className="rounded-[28px] border border-slate-700/80 bg-slate-950/80 p-3 text-center shadow-[0_18px_40px_rgba(0,0,0,0.45)]">
+            <div className="game-panel rounded-[28px] p-3 text-center">
               <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
                 {questions[currentIndex].topic || "Untitled topic"}
               </p>
-              <p className="mt-3 text-3xl font-semibold text-slate-50">
+              <p className="game-title mt-3 text-3xl font-semibold text-slate-50">
                 {questions[currentIndex].question?.type === "flashcard"
                   ? questions[currentIndex].question?.front ||
                     "Untitled question"
@@ -197,12 +203,12 @@ const Quiz = () => {
                       onClick={() =>
                         handleSelect(key, optionIndex, multiCorrect)
                       }
-                      className={`relative min-h-[64px] rounded-2xl border px-4 py-3 text-lg font-semibold transition duration-200 ease-out active:scale-[0.98] ${
+                      className={`game-option relative min-h-[64px] rounded-2xl px-4 py-3 text-lg font-semibold transition duration-200 ease-out active:scale-[0.98] ${
                         isCorrect
                           ? "border-emerald-500 bg-emerald-500 text-white shadow-[0_0_16px_rgba(16,185,129,0.35)]"
                           : isWrong
                           ? "border-rose-500 bg-rose-500 text-white shadow-[0_0_16px_rgba(244,63,94,0.35)]"
-                          : "border-slate-200 bg-slate-50 text-slate-900 hover:-translate-y-0.5"
+                          : "hover:-translate-y-0.5"
                       }`}
                     >
                       {isCorrect && (
@@ -226,7 +232,7 @@ const Quiz = () => {
                 onClick={goToPrev}
                 disabled={currentIndex === 0}
                 aria-label="Previous question"
-                className="flex-1 rounded-2xl border border-slate-800/80 bg-slate-950 px-6 py-2 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
+                className="game-button game-button-secondary flex-1 rounded-2xl px-6 py-2 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
               >
                 ←
               </button>
@@ -235,7 +241,7 @@ const Quiz = () => {
                 onClick={goToNext}
                 disabled={currentIndex === questions.length - 1}
                 aria-label="Next question"
-                className="flex-1 rounded-2xl border border-slate-800/80 bg-slate-950 px-6 py-2 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
+                className="game-button game-button-secondary flex-1 rounded-2xl px-6 py-2 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
               >
                 →
               </button>
@@ -244,11 +250,11 @@ const Quiz = () => {
         )}
       </div>
       {latestScore ? (
-        <div className="rounded-2xl border border-slate-700/70 bg-slate-900/60 px-4 py-3 text-center">
+        <div className="game-panel rounded-2xl px-4 py-3 text-center">
           <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
             Latest Quiz Score
           </p>
-          <p className="mt-2 text-4xl font-semibold text-slate-50">
+          <p className="game-title mt-2 text-4xl font-semibold text-slate-50">
             {latestScore.score} / {latestScore.total}
           </p>
           <p className="mt-2 text-sm text-slate-400">
@@ -261,9 +267,9 @@ const Quiz = () => {
             <button
               type="button"
               onClick={handleFinish}
-              className="flex-1 rounded-2xl bg-slate-950 px-6 py-2 text-xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98]"
+              className="game-button game-button-primary flex-1 rounded-2xl px-6 py-2 text-xl font-semibold text-slate-950 transition duration-200 ease-out active:scale-[0.98]"
             >
-              Finish Quiz
+              Finish Quest
             </button>
           </div>
         )

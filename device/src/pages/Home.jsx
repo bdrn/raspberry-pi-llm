@@ -103,12 +103,12 @@ const Home = () => {
   }, [selectedQuestions, topics]);
 
   return (
-    <div className="flex h-[100dvh] flex-col items-center justify-center gap-4 px-4 py-4 overflow-hidden">
-      <h1 className="text-center text-4xl font-semibold tracking-tight text-slate-50">
+    <div className="relative flex h-full flex-col items-center justify-center gap-4 px-4 py-4 overflow-hidden">
+      <h1 className="game-title text-center text-4xl font-semibold text-slate-50">
         What should we study now?
       </h1>
-      <div className="w-full max-w-2xl space-y-3">
-        <div className="scroll-hidden h-[280px] w-full space-y-4 overflow-y-auto rounded-2xl border border-slate-700/60 bg-slate-900/40 p-2">
+      <div className="w-full max-w-4xl space-y-4">
+        <div className="game-scroll scroll-hidden h-[420px] w-full space-y-5 overflow-y-auto rounded-3xl p-4">
           {topics.length === 0 ? (
             <p className="text-center text-base text-slate-400">
               No topics available yet.
@@ -117,35 +117,64 @@ const Home = () => {
             topics.map(({ topic, items }) => (
               <div
                 key={topic}
-                className="space-y-3 rounded-3xl border border-slate-800/70 bg-slate-950/60 p-3"
+                className="game-panel space-y-4 rounded-3xl p-4"
               >
                 <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold text-slate-100">
+                  <h2 className="text-2xl font-semibold text-slate-100">
                     {topic}
                   </h2>
-                  <span className="rounded-full bg-slate-800/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
-                    {items.length}
-                  </span>
+                  {items.length === 0 ? (
+                    <span className="text-xs text-slate-500">
+                      No questions yet
+                    </span>
+                  ) : (() => {
+                    const allSelected = items.every(
+                      ({ quizId, question, index }) => {
+                        const key = getQuestionKey(quizId, question, index);
+                        return Boolean(selectedQuestions[key]);
+                      }
+                    );
+                    return (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedQuestions((prev) => {
+                            const next = { ...prev };
+                            items.forEach(({ quizId, question, index }) => {
+                              const key = getQuestionKey(quizId, question, index);
+                              next[key] = !allSelected;
+                            });
+                            return next;
+                          });
+                        }}
+                        className="game-button game-button-secondary rounded-full px-4 py-2 text-xs font-semibold text-slate-100"
+                      >
+                        {allSelected
+                          ? "Clear all"
+                          : `Select all (${items.length})`}
+                      </button>
+                    );
+                  })()}
                 </div>
                 {items.length === 0 ? (
                   <p className="text-base text-slate-400">
                     No questions found for this topic.
                   </p>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {items.map(({ quizId, question, index }) => {
                       const key = getQuestionKey(quizId, question, index);
                       return (
                         <label
                           key={key}
-                          className={`flex items-center justify-between gap-4 rounded-2xl border px-3 py-2 text-slate-100 shadow-[0_8px_20px_rgba(0,0,0,0.35)] transition ${
+                          className={`game-panel flex items-center justify-between gap-4 rounded-2xl px-4 py-3 text-slate-100 transition ${
                             selectedQuestions[key]
-                              ? "border-sky-400/80 bg-slate-900/80"
+                              ? "border-emerald-400/80 bg-slate-900/80"
                               : "border-slate-800/80 bg-slate-900/50"
                           }`}
                         >
                           <div className="space-y-1">
-                            <p className="text-base font-semibold">
+                            <p className="text-lg font-semibold">
                               {getQuestionText(question)}
                             </p>
                             <p className="text-sm text-slate-400 line-clamp-1">
@@ -156,7 +185,7 @@ const Home = () => {
                             type="checkbox"
                             checked={Boolean(selectedQuestions[key])}
                             onChange={() => toggleQuestion(key)}
-                            className="h-6 w-6 rounded-full border-slate-500 bg-slate-900 text-slate-50 accent-sky-400"
+                            className="h-6 w-6 rounded-full border-slate-500 bg-slate-900 text-slate-50 accent-emerald-400"
                           />
                         </label>
                       );
@@ -171,14 +200,14 @@ const Home = () => {
           <Link
             to="/flashcards"
             state={{ selectedItems }}
-            className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-4 py-3 text-center text-2xl font-semibold text-slate-50"
+            className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-3 text-center text-xl font-semibold text-slate-50"
           >
             Flashcards
           </Link>
           <Link
             to="/quiz"
             state={{ selectedItems }}
-            className="flex-1 rounded-2xl border border-slate-700/80 bg-slate-900/60 px-4 py-3 text-center text-2xl font-semibold text-slate-50"
+            className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-3 text-center text-xl font-semibold text-slate-50"
           >
             Quiz
           </Link>

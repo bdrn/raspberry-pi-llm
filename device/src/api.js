@@ -12,6 +12,9 @@ const resolveBaseUrl = () => {
 
 const api = axios.create({
   baseURL: resolveBaseUrl(),
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
 });
 
 export default api;

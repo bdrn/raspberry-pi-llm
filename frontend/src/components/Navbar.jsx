@@ -46,19 +46,6 @@ const Navbar = () => {
               <span className="absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full bg-sky-400" />
             )}
           </Link>
-          <Link
-            to="/settings"
-            className={`${linkBase} ${
-              isActive("/settings")
-                ? "bg-slate-900 text-slate-50 shadow-sm"
-                : "text-slate-300 hover:bg-slate-800/80"
-            }`}
-          >
-            Settings
-            {isActive("/settings") && (
-              <span className="absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full bg-sky-400" />
-            )}
-          </Link>
         </nav>
       </div>
     </header>
