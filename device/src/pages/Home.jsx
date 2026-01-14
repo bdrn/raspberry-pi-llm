@@ -104,9 +104,17 @@ const Home = () => {
 
   return (
     <div className="relative flex h-full flex-col items-center justify-center gap-4 px-4 py-4 overflow-hidden">
-      <h1 className="game-title text-center text-4xl font-semibold text-slate-50">
-        What should we study now?
-      </h1>
+      <div className="space-y-2 text-center">
+        <p className="text-xs uppercase tracking-[0.35em] text-slate-500">
+          Repeat now
+        </p>
+        <h1 className="game-title text-4xl font-semibold text-slate-50">
+          Pick questions to repeat
+        </h1>
+        <p className="text-sm text-slate-400">
+          Choose what you want to practice right away.
+        </p>
+      </div>
       <div className="w-full max-w-4xl space-y-4">
         <div className="game-scroll scroll-hidden h-[420px] w-full space-y-5 overflow-y-auto rounded-3xl p-4">
           {topics.length === 0 ? (

@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 
 const menuItems = [
-  { label: "Home", path: "/home" },
+  { label: "Pop Quiz", path: "/pop-quiz" },
+  { label: "Repeat Now", path: "/home" },
   { label: "Timer", path: "/timer" },
   { label: "Dashboard", path: "/dashboard" },
 ];

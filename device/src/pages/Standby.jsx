@@ -119,7 +119,7 @@ const Standby = () => {
         onClick={() => {
           if (isPowering) return;
           setIsPowering(true);
-          setTimeout(() => navigate("/home"), 900);
+          setTimeout(() => navigate("/pop-quiz"), 900);
         }}
         className="standby-power"
         disabled={isPowering}
