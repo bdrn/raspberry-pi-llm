@@ -73,26 +73,26 @@ const Flashcards = () => {
   };
 
   return (
-    <div className="flex h-full flex-col gap-3 px-4 py-4 overflow-hidden">
-      <div className="flex items-center justify-between">
-        <h1 className="game-title text-3xl font-semibold text-slate-50">
+    <div className="flex h-full flex-col gap-3 px-3 py-3 overflow-hidden">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="game-title text-2xl font-semibold text-slate-50">
           Flashcards
         </h1>
         <Link
           to="/home"
-          className="game-button game-button-secondary rounded-full px-4 py-2 text-xs text-slate-100"
+          className="game-button game-button-secondary rounded-full px-4 py-2 text-[10px] text-slate-100"
         >
           Back
         </Link>
       </div>
-      <div className="flex flex-1 items-center justify-center">
+      <div className="flex flex-1 items-center justify-center min-h-0">
         {cards.length === 0 ? (
           <p className="text-sm text-slate-400">
             No questions selected. Go back and choose some items.
           </p>
         ) : (
           <div className="w-full max-w-xl space-y-3">
-            <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-400">
+            <p className="text-center text-[10px] uppercase tracking-[0.3em] text-slate-400">
               Card {currentIndex + 1} of {cards.length}
             </p>
             <div
@@ -103,7 +103,7 @@ const Flashcards = () => {
               onPointerUp={handlePointerUp}
               onPointerLeave={handlePointerUp}
               onClick={() => toggleFlip(cards[currentIndex].key)}
-              className="flashcard-flip game-panel float-slow relative h-[260px] w-full select-none rounded-[32px]"
+              className="flashcard-flip game-panel float-slow relative h-[220px] w-full select-none rounded-[28px]"
             >
               <div
                 className={`flashcard-inner ${
@@ -111,29 +111,29 @@ const Flashcards = () => {
                 }`}
               >
                 <div className="flashcard-face flashcard-front">
-                  <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
                     {cards[currentIndex].topic || "Untitled topic"}
                   </p>
-                  <p className="mt-4 text-sm uppercase tracking-[0.3em] text-slate-500">
+                  <p className="mt-3 text-[10px] uppercase tracking-[0.3em] text-slate-500">
                     Question
                   </p>
-                  <p className="mt-5 text-3xl font-semibold">
+                  <p className="mt-3 text-2xl font-semibold">
                     {cards[currentIndex].front || "Untitled question"}
                   </p>
                 </div>
                 <div className="flashcard-face flashcard-back">
-                  <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500">
                     {cards[currentIndex].topic || "Untitled topic"}
                   </p>
-                  <p className="mt-4 text-sm uppercase tracking-[0.3em] text-slate-600">
+                  <p className="mt-3 text-[10px] uppercase tracking-[0.3em] text-slate-600">
                     Answer
                   </p>
-                  <p className="mt-5 text-3xl font-semibold">
+                  <p className="mt-3 text-2xl font-semibold">
                     {cards[currentIndex].back || "Answer unavailable"}
                   </p>
                 </div>
               </div>
-              <p className="pointer-events-none absolute bottom-4 left-0 right-0 text-center text-xs text-slate-500">
+              <p className="pointer-events-none absolute bottom-3 left-0 right-0 text-center text-[10px] text-slate-500">
                 Tap to flip • Swipe to navigate
               </p>
             </div>
@@ -142,7 +142,7 @@ const Flashcards = () => {
                 type="button"
                 onClick={goToPrev}
                 disabled={currentIndex === 0}
-                className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-2 text-base font-semibold text-slate-50 disabled:opacity-40"
+                className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-2 text-sm font-semibold text-slate-50 disabled:opacity-40"
               >
                 Previous
               </button>
@@ -150,7 +150,7 @@ const Flashcards = () => {
                 type="button"
                 onClick={goToNext}
                 disabled={currentIndex === cards.length - 1}
-                className="game-button game-button-primary flex-1 rounded-2xl px-4 py-2 text-base font-semibold disabled:opacity-40"
+                className="game-button game-button-primary flex-1 rounded-2xl px-4 py-2 text-sm font-semibold disabled:opacity-40"
               >
                 Next
               </button>

@@ -103,36 +103,36 @@ const Home = () => {
   }, [selectedQuestions, topics]);
 
   return (
-    <div className="relative flex h-full flex-col items-center justify-center gap-4 px-4 py-4 overflow-hidden">
-      <div className="space-y-2 text-center">
-        <p className="text-xs uppercase tracking-[0.35em] text-slate-500">
+    <div className="relative flex h-full flex-col items-center justify-center gap-3 px-3 py-3 overflow-hidden">
+      <div className="space-y-1 text-center">
+        <p className="text-[10px] uppercase tracking-[0.35em] text-slate-500">
           Repeat now
         </p>
-        <h1 className="game-title text-4xl font-semibold text-slate-50">
+        <h1 className="game-title text-3xl font-semibold text-slate-50">
           Pick questions to repeat
         </h1>
-        <p className="text-sm text-slate-400">
+        <p className="text-[11px] text-slate-400">
           Choose what you want to practice right away.
         </p>
       </div>
-      <div className="w-full max-w-4xl space-y-4">
-        <div className="game-scroll scroll-hidden h-[420px] w-full space-y-5 overflow-y-auto rounded-3xl p-4">
+      <div className="w-full max-w-4xl flex-1 min-h-0 space-y-3">
+        <div className="game-scroll scroll-hidden flex-1 min-h-0 w-full space-y-4 overflow-y-auto rounded-2xl p-3">
           {topics.length === 0 ? (
-            <p className="text-center text-base text-slate-400">
+            <p className="text-center text-sm text-slate-400">
               No topics available yet.
             </p>
           ) : (
             topics.map(({ topic, items }) => (
               <div
                 key={topic}
-                className="game-panel space-y-4 rounded-3xl p-4"
+                className="game-panel space-y-3 rounded-2xl p-3"
               >
                 <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-semibold text-slate-100">
+                  <h2 className="text-xl font-semibold text-slate-100">
                     {topic}
                   </h2>
                   {items.length === 0 ? (
-                    <span className="text-xs text-slate-500">
+                    <span className="text-[10px] text-slate-500">
                       No questions yet
                     </span>
                   ) : (() => {
@@ -155,7 +155,7 @@ const Home = () => {
                             return next;
                           });
                         }}
-                        className="game-button game-button-secondary rounded-full px-4 py-2 text-xs font-semibold text-slate-100"
+                        className="game-button game-button-secondary rounded-full px-3 py-2 text-[11px] font-semibold text-slate-100 min-h-[36px]"
                       >
                         {allSelected
                           ? "Clear all"
@@ -165,27 +165,27 @@ const Home = () => {
                   })()}
                 </div>
                 {items.length === 0 ? (
-                  <p className="text-base text-slate-400">
+                  <p className="text-sm text-slate-400">
                     No questions found for this topic.
                   </p>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     {items.map(({ quizId, question, index }) => {
                       const key = getQuestionKey(quizId, question, index);
                       return (
                         <label
                           key={key}
-                          className={`game-panel flex items-center justify-between gap-4 rounded-2xl px-4 py-3 text-slate-100 transition ${
+                          className={`game-panel flex items-center justify-between gap-3 rounded-2xl px-3 py-2 text-slate-100 transition ${
                             selectedQuestions[key]
                               ? "border-emerald-400/80 bg-slate-900/80"
                               : "border-slate-800/80 bg-slate-900/50"
                           }`}
                         >
                           <div className="space-y-1">
-                            <p className="text-lg font-semibold">
+                            <p className="text-base font-semibold">
                               {getQuestionText(question)}
                             </p>
-                            <p className="text-sm text-slate-400 line-clamp-1">
+                            <p className="text-[11px] text-slate-400 line-clamp-1">
                               {getAnswerText(question)}
                             </p>
                           </div>
@@ -193,7 +193,7 @@ const Home = () => {
                             type="checkbox"
                             checked={Boolean(selectedQuestions[key])}
                             onChange={() => toggleQuestion(key)}
-                            className="h-6 w-6 rounded-full border-slate-500 bg-slate-900 text-slate-50 accent-emerald-400"
+                            className="h-5 w-5 rounded-full border-slate-500 bg-slate-900 text-slate-50 accent-emerald-400"
                           />
                         </label>
                       );
@@ -204,18 +204,18 @@ const Home = () => {
             ))
           )}
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-2">
           <Link
             to="/flashcards"
             state={{ selectedItems }}
-            className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-3 text-center text-xl font-semibold text-slate-50"
+            className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-2 text-center text-base font-semibold text-slate-50"
           >
             Flashcards
           </Link>
           <Link
             to="/quiz"
             state={{ selectedItems }}
-            className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-3 text-center text-xl font-semibold text-slate-50"
+            className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-2 text-center text-base font-semibold text-slate-50"
           >
             Quiz
           </Link>

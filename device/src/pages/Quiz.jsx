@@ -137,33 +137,33 @@ const Quiz = () => {
   };
 
   return (
-    <div className="flex h-full flex-col gap-3 px-4 py-4 overflow-hidden">
-      <div className="flex items-center justify-between">
-        <h1 className="game-title text-3xl font-semibold text-slate-50">
+    <div className="flex h-full flex-col gap-3 px-3 py-3 overflow-hidden">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="game-title text-2xl font-semibold text-slate-50">
           Quiz
         </h1>
         <Link
           to="/home"
-          className="game-button game-button-secondary rounded-full px-4 py-2 text-xs text-slate-100"
+          className="game-button game-button-secondary rounded-full px-4 py-2 text-[10px] text-slate-100"
         >
           Back
         </Link>
       </div>
-      <div className="flex flex-1 items-center justify-center">
+      <div className="flex flex-1 items-center justify-center min-h-0">
         {questions.length === 0 ? (
           <p className="text-sm text-slate-400">
             No questions selected. Go back and choose some items.
           </p>
         ) : (
-          <div className="w-full max-w-xl space-y-4">
-            <p className="text-center text-xs uppercase tracking-[0.3em] text-slate-400">
+          <div className="w-full max-w-xl space-y-3">
+            <p className="text-center text-[10px] uppercase tracking-[0.3em] text-slate-400">
               Question {currentIndex + 1} of {questions.length}
             </p>
-            <div className="game-panel rounded-[28px] p-3 text-center">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+            <div className="game-panel rounded-[24px] p-3 text-center">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500">
                 {questions[currentIndex].topic || "Untitled topic"}
               </p>
-              <p className="game-title mt-3 text-3xl font-semibold text-slate-50">
+              <p className="game-title mt-2 text-2xl font-semibold text-slate-50">
                 {questions[currentIndex].question?.type === "flashcard"
                   ? questions[currentIndex].question?.front ||
                     "Untitled question"
@@ -171,7 +171,7 @@ const Quiz = () => {
                     "Untitled question"}
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               {currentOptions.map(({ option, index: optionIndex }) => {
                   const key = questions[currentIndex].key;
                   const selectedValue = answers[key];
@@ -203,7 +203,7 @@ const Quiz = () => {
                       onClick={() =>
                         handleSelect(key, optionIndex, multiCorrect)
                       }
-                      className={`game-option relative min-h-[64px] rounded-2xl px-4 py-3 text-lg font-semibold transition duration-200 ease-out active:scale-[0.98] ${
+                      className={`game-option relative min-h-[52px] rounded-2xl px-3 py-2 text-base font-semibold transition duration-200 ease-out active:scale-[0.98] ${
                         isCorrect
                           ? "border-emerald-500 bg-emerald-500 text-white shadow-[0_0_16px_rgba(16,185,129,0.35)]"
                           : isWrong
@@ -226,13 +226,13 @@ const Quiz = () => {
                   );
                 })}
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               <button
                 type="button"
                 onClick={goToPrev}
                 disabled={currentIndex === 0}
                 aria-label="Previous question"
-                className="game-button game-button-secondary flex-1 rounded-2xl px-6 py-2 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
+                className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-2 text-xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
               >
                 ←
               </button>
@@ -241,7 +241,7 @@ const Quiz = () => {
                 onClick={goToNext}
                 disabled={currentIndex === questions.length - 1}
                 aria-label="Next question"
-                className="game-button game-button-secondary flex-1 rounded-2xl px-6 py-2 text-2xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
+                className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-2 text-xl font-semibold text-slate-50 transition duration-200 ease-out active:scale-[0.98] disabled:opacity-40"
               >
                 →
               </button>
@@ -250,14 +250,14 @@ const Quiz = () => {
         )}
       </div>
       {latestScore ? (
-        <div className="game-panel rounded-2xl px-4 py-3 text-center">
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
+        <div className="game-panel rounded-2xl px-4 py-2 text-center">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
             Latest Quiz Score
           </p>
-          <p className="game-title mt-2 text-4xl font-semibold text-slate-50">
+          <p className="game-title mt-1 text-3xl font-semibold text-slate-50">
             {latestScore.score} / {latestScore.total}
           </p>
-          <p className="mt-2 text-sm text-slate-400">
+          <p className="mt-1 text-[11px] text-slate-400">
             Completed {new Date(latestScore.completedAt).toLocaleString()}
           </p>
         </div>
@@ -267,7 +267,7 @@ const Quiz = () => {
             <button
               type="button"
               onClick={handleFinish}
-              className="game-button game-button-primary flex-1 rounded-2xl px-6 py-2 text-xl font-semibold text-slate-950 transition duration-200 ease-out active:scale-[0.98]"
+              className="game-button game-button-primary flex-1 rounded-2xl px-6 py-2 text-lg font-semibold text-slate-950 transition duration-200 ease-out active:scale-[0.98]"
             >
               Finish Quest
             </button>

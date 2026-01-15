@@ -52,8 +52,8 @@ const Dashboard = () => {
     };
   });
 
-  const chartWidth = 320;
-  const chartHeight = 120;
+  const chartWidth = 260;
+  const chartHeight = 100;
   const chartPadding = 12;
 
   const path =
@@ -75,14 +75,14 @@ const Dashboard = () => {
       : "";
 
   return (
-    <div className="flex h-full min-h-0 flex-col gap-3 px-4 py-4 overflow-hidden">
-      <div className="flex items-center justify-between">
-        <h1 className="game-title text-3xl font-semibold text-slate-50">
+    <div className="flex h-full min-h-0 flex-col gap-3 px-3 py-3 overflow-hidden">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="game-title text-2xl font-semibold text-slate-50">
           Dashboard
         </h1>
         <Link
           to="/home"
-          className="game-button game-button-secondary rounded-full px-4 py-2 text-xs text-slate-100"
+          className="game-button game-button-secondary rounded-full px-4 py-2 text-[10px] text-slate-100"
         >
           Back
         </Link>
@@ -90,7 +90,7 @@ const Dashboard = () => {
 
       <div className="flex min-h-0 flex-1 gap-3">
         <div className="game-scroll scroll-hidden h-full w-full flex-1 overflow-y-auto rounded-2xl p-2">
-          <div className="grid gap-3 sm:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2">
             {[
               {
                 label: "Latest",
@@ -117,12 +117,12 @@ const Dashboard = () => {
             ].map((item) => (
               <div
                 key={item.label}
-                className="game-panel flex aspect-square w-full flex-col items-center justify-center rounded-2xl p-3 text-center"
+                className="game-panel flex min-h-[96px] w-full flex-col items-center justify-center rounded-2xl p-3 text-center"
               >
                 <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
                   {item.label}
                 </p>
-                <p className="game-title mt-2 text-2xl font-semibold text-slate-50">
+                <p className="game-title mt-1 text-xl font-semibold text-slate-50">
                   {item.value}
                 </p>
                 <p className="mt-1 text-[10px] text-slate-400">
@@ -132,23 +132,23 @@ const Dashboard = () => {
             ))}
 
             <div className="game-panel rounded-2xl p-3 sm:col-span-2">
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
                 Progress Over Time
               </p>
               {points.length === 0 ? (
-                <p className="mt-3 text-base text-slate-400">
+                <p className="mt-2 text-sm text-slate-400">
                   No history yet. Finish quizzes to build your progress graph.
                 </p>
               ) : (
-                <div className="mt-3 flex flex-col gap-3">
+                <div className="mt-2 flex flex-col gap-3">
                   <div className="flex items-start gap-3">
-                    <div className="flex h-[120px] flex-col justify-between text-xs text-slate-400">
+                    <div className="flex h-[100px] flex-col justify-between text-[10px] text-slate-400">
                       <span>100%</span>
                       <span>0%</span>
                     </div>
                     <svg
                       width={chartWidth}
-                      height={120}
+                      height={100}
                       viewBox={`0 0 ${chartWidth} ${chartHeight}`}
                       className="overflow-visible"
                     >
@@ -181,12 +181,12 @@ const Dashboard = () => {
                       })}
                     </svg>
                   </div>
-                  <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-400">
+                  <div className="flex flex-wrap gap-x-4 gap-y-2 text-[11px] text-slate-400">
                     {points.map((point, index) => (
                       <span key={`label-${index}`}>{point.label}</span>
                     ))}
                   </div>
-                  <p className="text-sm text-slate-400">
+                  <p className="text-[11px] text-slate-400">
                     {points.length} sessions • Average{" "}
                     {Math.round(
                       (points.reduce((sum, point) => sum + point.y, 0) /
@@ -200,24 +200,24 @@ const Dashboard = () => {
             </div>
 
             <div className="game-panel rounded-2xl p-3 sm:col-span-2">
-              <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
                 Progress By Topic
               </p>
               {perTopicList.length === 0 ? (
-                <p className="mt-3 text-base text-slate-400">
+                <p className="mt-2 text-sm text-slate-400">
                   No topic stats yet. Finish quizzes to see topic progress.
                 </p>
               ) : (
-                <div className="mt-3 space-y-3">
+                <div className="mt-2 space-y-2">
                   {perTopicList.map((topic) => (
                     <div
                       key={topic.topic}
                       className="game-panel rounded-xl px-3 py-2"
                     >
-                      <p className="text-base font-semibold text-slate-100">
+                      <p className="text-sm font-semibold text-slate-100">
                         {topic.topic}
                       </p>
-                      <p className="mt-1 text-sm text-slate-400">
+                      <p className="mt-1 text-[11px] text-slate-400">
                         {topic.correct}/{topic.total} correct • {topic.percent}%
                       </p>
                     </div>

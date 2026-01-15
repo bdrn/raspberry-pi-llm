@@ -112,10 +112,10 @@ const PopQuizOverlay = () => {
     : [];
 
   return (
-    <div className="theme-overlay fixed inset-0 z-50 flex items-center justify-center px-4 py-6 backdrop-blur-sm">
-      <div className="game-panel relative w-full max-w-xl space-y-4 rounded-[32px] p-5 text-center">
+    <div className="theme-overlay fixed inset-0 z-50 flex items-center justify-center px-3 py-4 backdrop-blur-sm">
+      <div className="game-panel relative w-full max-w-[520px] space-y-3 rounded-[28px] p-4 text-center">
         <div className="flex items-center justify-between">
-          <p className="text-xs uppercase tracking-[0.4em] text-slate-400">
+          <p className="text-[10px] uppercase tracking-[0.4em] text-slate-400">
             Pop-up quiz
           </p>
           <button
@@ -128,39 +128,39 @@ const PopQuizOverlay = () => {
         </div>
 
         {showResults ? (
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+          <div className="space-y-2">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
               Session complete
             </p>
-            <p className="game-title text-4xl font-semibold text-slate-50">
+            <p className="game-title text-3xl font-semibold text-slate-50">
               {calculateScore()} / {questions.length}
             </p>
-            <p className="text-sm text-slate-400">
+            <p className="text-[11px] text-slate-400">
               Nice work! Stay consistent to keep your streak alive.
             </p>
             <button
               type="button"
               onClick={closeQuiz}
-              className="game-button game-button-primary w-full rounded-2xl px-4 py-3 text-base font-semibold"
+              className="game-button game-button-primary w-full rounded-2xl px-4 py-2 text-sm font-semibold"
             >
               Close
             </button>
           </div>
         ) : (
-          <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+          <div className="space-y-3">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
               Question {currentIndex + 1} of {questions.length}
             </p>
-            <div className="rounded-[28px] border border-slate-800/80 bg-slate-950/70 px-4 py-6">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+            <div className="rounded-[24px] border border-slate-800/80 bg-slate-950/70 px-4 py-4">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500">
                 {current?.topic || "Untitled topic"}
               </p>
-              <p className="game-title mt-3 text-3xl font-semibold text-slate-50">
+              <p className="game-title mt-2 text-2xl font-semibold text-slate-50">
                 {currentQuestion?.question || "Untitled question"}
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               {currentOptions.map(({ option, index: optionIndex }) => {
                 const selectedValue = answers[currentKey];
                 const isRevealed = Boolean(revealed[currentKey]);
@@ -182,7 +182,7 @@ const PopQuizOverlay = () => {
                     onClick={() =>
                       handleSelect(currentKey, optionIndex, allowsMultiple)
                     }
-                    className={`game-option relative min-h-[64px] rounded-2xl px-4 py-3 text-base font-semibold transition duration-200 ease-out active:scale-[0.98] ${
+                    className={`game-option relative min-h-[52px] rounded-2xl px-3 py-2 text-sm font-semibold transition duration-200 ease-out active:scale-[0.98] ${
                       isCorrect
                         ? "border-emerald-500 bg-emerald-500 text-white shadow-[0_0_16px_rgba(16,185,129,0.35)]"
                         : isWrong
@@ -206,12 +206,12 @@ const PopQuizOverlay = () => {
               })}
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex gap-3">
               <button
                 type="button"
                 onClick={goToPrev}
                 disabled={currentIndex === 0}
-                className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-2 text-lg font-semibold disabled:opacity-40"
+                className="game-button game-button-secondary flex-1 rounded-2xl px-4 py-2 text-base font-semibold disabled:opacity-40"
               >
                 Back
               </button>
@@ -219,7 +219,7 @@ const PopQuizOverlay = () => {
                 <button
                   type="button"
                   onClick={handleFinish}
-                  className="game-button game-button-primary flex-1 rounded-2xl px-4 py-2 text-lg font-semibold"
+                  className="game-button game-button-primary flex-1 rounded-2xl px-4 py-2 text-base font-semibold"
                 >
                   Finish
                 </button>
@@ -227,7 +227,7 @@ const PopQuizOverlay = () => {
                 <button
                   type="button"
                   onClick={goToNext}
-                  className="game-button game-button-primary flex-1 rounded-2xl px-4 py-2 text-lg font-semibold"
+                  className="game-button game-button-primary flex-1 rounded-2xl px-4 py-2 text-base font-semibold"
                 >
                   Next
                 </button>

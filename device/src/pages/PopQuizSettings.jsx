@@ -41,42 +41,42 @@ const PopQuizSettings = () => {
     topics.every((topic) => selectedSet.has(topic.topic));
 
   return (
-    <div className="flex h-full flex-col gap-4 px-4 py-4 overflow-hidden">
-      <div className="flex items-center justify-between">
+    <div className="flex h-full flex-col gap-3 px-3 py-3 overflow-hidden">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs uppercase tracking-[0.35em] text-slate-500">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-slate-500">
             Pop-up quiz
           </p>
-          <h1 className="game-title text-3xl font-semibold text-slate-50">
+          <h1 className="game-title text-2xl font-semibold text-slate-50">
             Schedule your pop-ups
           </h1>
         </div>
         <Link
           to="/home"
-          className="game-button game-button-primary rounded-full px-5 py-2 text-xs font-semibold"
+          className="game-button game-button-primary rounded-full px-4 py-2 text-[10px] font-semibold"
         >
           Repeat now
         </Link>
       </div>
 
-      <div className="flex flex-1 flex-col gap-4 overflow-hidden">
-        <div className="game-scroll scroll-hidden h-[360px] space-y-4 overflow-y-auto rounded-3xl p-4">
-          <div className="flex items-center justify-between">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+      <div className="flex flex-1 flex-col gap-3 overflow-hidden min-h-0">
+        <div className="game-scroll scroll-hidden flex-1 min-h-0 space-y-3 overflow-y-auto rounded-2xl p-3">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
               Topics to include
             </p>
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={handleSelectAll}
-                className="game-button game-button-secondary rounded-full px-3 py-1 text-[10px] font-semibold"
+                className="game-button game-button-secondary rounded-full px-3 py-2 text-[11px] font-semibold min-h-[36px]"
               >
                 {allSelected ? "All selected" : "Select all"}
               </button>
               <button
                 type="button"
                 onClick={refreshQuizzes}
-                className="game-button game-button-secondary rounded-full px-3 py-1 text-[10px] font-semibold"
+                className="game-button game-button-secondary rounded-full px-3 py-2 text-[11px] font-semibold min-h-[36px]"
               >
                 Sync
               </button>
@@ -90,21 +90,21 @@ const PopQuizSettings = () => {
               No topics yet. Upload quizzes on the dashboard first.
             </p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {topics.map((topic) => {
                 const isSelected = selectedSet.has(topic.topic);
                 return (
                   <label
                     key={topic.topic}
-                    className={`game-panel flex items-center justify-between gap-4 rounded-2xl px-4 py-3 text-slate-100 transition ${
+                    className={`game-panel flex items-center justify-between gap-3 rounded-2xl px-3 py-2 text-slate-100 transition ${
                       isSelected
                         ? "border-emerald-400/80 bg-slate-900/80"
                         : "border-slate-800/80 bg-slate-900/50"
                     }`}
                   >
                     <div>
-                      <p className="text-lg font-semibold">{topic.topic}</p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-base font-semibold">{topic.topic}</p>
+                      <p className="text-[11px] text-slate-400">
                         {topic.questionCount} questions • {topic.quizCount} quizzes
                       </p>
                     </div>
@@ -112,7 +112,7 @@ const PopQuizSettings = () => {
                       type="checkbox"
                       checked={isSelected}
                       onChange={() => toggleTopic(topic.topic)}
-                      className="h-6 w-6 rounded-full border-slate-500 bg-slate-900 text-slate-50 accent-emerald-400"
+                      className="h-5 w-5 rounded-full border-slate-500 bg-slate-900 text-slate-50 accent-emerald-400"
                     />
                   </label>
                 );
@@ -121,13 +121,13 @@ const PopQuizSettings = () => {
           )}
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-2">
-          <div className="game-panel rounded-3xl p-4">
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="game-panel rounded-2xl p-3">
             <div className="flex items-center justify-between">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
                 Pop-up frequency
               </p>
-              <span className="text-base font-semibold text-emerald-200">
+              <span className="text-sm font-semibold text-emerald-200">
                 {settings.frequencyMinutes} min
               </span>
             </div>
@@ -142,20 +142,20 @@ const PopQuizSettings = () => {
                   frequencyMinutes: Number(event.target.value),
                 })
               }
-              className="game-slider mt-4"
+              className="game-slider mt-3"
             />
-            <div className="mt-2 flex justify-between text-xs text-slate-500">
+            <div className="mt-2 flex justify-between text-[10px] text-slate-500">
               <span>1</span>
               <span>120</span>
             </div>
           </div>
 
-          <div className="game-panel rounded-3xl p-4">
+          <div className="game-panel rounded-2xl p-3">
             <div className="flex items-center justify-between">
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-slate-400">
                 Max questions
               </p>
-              <span className="text-base font-semibold text-emerald-200">
+              <span className="text-sm font-semibold text-emerald-200">
                 {settings.maxQuestions}
               </span>
             </div>
@@ -168,16 +168,16 @@ const PopQuizSettings = () => {
               onChange={(event) =>
                 updateSettings({ maxQuestions: Number(event.target.value) })
               }
-              className="game-slider mt-4"
+              className="game-slider mt-3"
             />
-            <div className="mt-2 flex justify-between text-xs text-slate-500">
+            <div className="mt-2 flex justify-between text-[10px] text-slate-500">
               <span>1</span>
               <span>10</span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-slate-500">
+        <div className="flex items-center justify-between text-[10px] text-slate-500">
           <span>
             {usingAllTopics
               ? "All topics included"

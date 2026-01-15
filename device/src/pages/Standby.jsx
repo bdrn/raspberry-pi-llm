@@ -91,9 +91,9 @@ const Standby = () => {
   });
 
   return (
-    <div className="standby-shell relative flex h-full w-full flex-col items-center justify-center gap-10 px-6 py-6 text-center">
+    <div className="standby-shell relative flex h-full w-full flex-col items-center justify-center gap-6 px-4 py-4 text-center">
       <div
-        className={`standby-panel w-[260px] rounded-3xl px-6 py-6 text-center ${
+        className={`standby-panel w-[240px] rounded-3xl px-5 py-5 text-center ${
           isPulsing ? "standby-pulse" : ""
         }`}
       >
@@ -106,7 +106,7 @@ const Standby = () => {
         <p className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">
           {activeWidget.label}
         </p>
-        <p className="mt-3 text-4xl font-semibold text-zinc-400">
+        <p className="mt-3 text-3xl font-semibold text-zinc-400">
           {activeWidget.value}
         </p>
         <p className="mt-2 text-xs text-zinc-600">
