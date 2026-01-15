@@ -40,3 +40,14 @@ class QuizSession(db.Model):
             "per_topic": json.loads(self.per_topic) if self.per_topic else {},
             "created_at": self.created_at.isoformat(),
         }
+
+
+class AppSettings(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    theme = db.Column(db.String(50), nullable=False, default="game")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "theme": self.theme,
+        }

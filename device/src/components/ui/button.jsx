@@ -1,18 +1,18 @@
 import { cn } from "@/lib/utils";
 
 const baseStyles =
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-60 ring-offset-background";
+  "game-button inline-flex items-center justify-center whitespace-nowrap rounded-full text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--theme-ring)] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-60 ring-offset-background";
 
 const variants = {
-  default: "bg-sky-600 text-white shadow hover:bg-sky-700 active:bg-sky-800",
+  default: "game-button-primary shadow",
   outline:
-    "border border-slate-200 bg-white text-slate-900 shadow-sm hover:bg-slate-50",
-  ghost: "text-slate-600 hover:bg-slate-100",
+    "game-button-secondary border border-[var(--theme-button-secondary-border)] shadow-sm hover:border-[var(--theme-button-secondary-border)]",
+  ghost: "text-[var(--theme-text)] hover:bg-white/5",
 };
 
 const sizes = {
   default: "h-9 px-4 py-2",
-  sm: "h-8 px-3 text-xs",
+  sm: "h-8 px-3 text-[11px]",
   lg: "h-10 px-6 text-sm",
   icon: "h-9 w-9",
 };

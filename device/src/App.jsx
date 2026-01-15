@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -19,9 +19,11 @@ import Flashcards from "./pages/Flashcards";
 import Dashboard from "./pages/Dashboard";
 import PopQuizSettings from "./pages/PopQuizSettings";
 import "./App.css";
+import api from "./api";
 
 const AppShell = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [theme, setTheme] = useState("game");
   const location = useLocation();
   const isStandby =
     location.pathname === "/" || location.pathname.startsWith("/standby");
@@ -30,10 +32,38 @@ const AppShell = () => {
     location.pathname.startsWith("/home") ||
     location.pathname.startsWith("/pop-quiz");
 
+  useEffect(() => {
+    let isMounted = true;
+    const applyTheme = (value) => {
+      if (typeof document !== "undefined") {
+        document.documentElement.dataset.theme = value;
+      }
+    };
+    const fetchTheme = async () => {
+      try {
+        const response = await api.get("/settings");
+        const nextTheme = response.data?.settings?.theme || "game";
+        if (isMounted && nextTheme !== theme) {
+          setTheme(nextTheme);
+          applyTheme(nextTheme);
+        }
+      } catch (error) {
+        console.error("Failed to sync theme settings:", error);
+      }
+    };
+    applyTheme(theme);
+    fetchTheme();
+    const intervalId = setInterval(fetchTheme, 10000);
+    return () => {
+      isMounted = false;
+      clearInterval(intervalId);
+    };
+  }, [theme]);
+
   return (
     <TimerProvider>
       <PopQuizProvider isBlocked={isPopQuizBlocked}>
-        <div className="game-shell h-[100dvh] overflow-hidden text-slate-50">
+        <div className="game-shell h-[100dvh] overflow-hidden theme-text">
           <main className="flex h-full">
             {!isStandby && isMenuOpen ? (
               <SideMenu onToggle={() => setIsMenuOpen(false)} />
@@ -45,7 +75,7 @@ const AppShell = () => {
                     <button
                       type="button"
                       onClick={() => setIsMenuOpen((prev) => !prev)}
-                      className="menu-toggle game-button game-button-secondary rounded-full px-4 py-2 text-[10px] font-semibold text-slate-100"
+                      className="menu-toggle game-button game-button-secondary rounded-full px-4 py-2 text-[10px] font-semibold"
                     >
                       {isMenuOpen ? "Hide Menu" : "Show Menu"}
                     </button>

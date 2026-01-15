@@ -323,27 +323,27 @@ const Topics = () => {
   return (
     <div className="space-y-8">
       <header className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-[0.26em] text-slate-400">
+        <p className="text-xs font-medium uppercase tracking-[0.26em] theme-muted">
           Topics
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
+        <h1 className="game-title text-3xl font-semibold theme-text">
           Manage topics
         </h1>
-        <p className="max-w-2xl text-sm text-slate-400">
+        <p className="max-w-2xl text-sm theme-muted">
           Edit or remove topics across quizzes to keep your library organized.
         </p>
       </header>
 
-      <Card className="border-slate-800 p-4">
+      <Card className="p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <input
             type="search"
             placeholder="Search topics..."
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            className="w-full rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-2 text-sm text-slate-100 shadow-sm focus:border-sky-400 focus:outline-none md:w-[260px]"
+            className="theme-input w-full rounded-xl px-4 py-2 text-sm shadow-sm focus:outline-none md:w-[260px]"
           />
-          <span className="text-xs text-slate-400">
+          <span className="text-xs theme-muted">
             {topics.length} {topics.length === 1 ? "topic" : "topics"}
           </span>
         </div>
@@ -353,12 +353,12 @@ const Topics = () => {
             placeholder="New topic name"
             value={newTopicName}
             onChange={(event) => setNewTopicName(event.target.value)}
-            className="w-full rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-2 text-sm text-slate-100 focus:border-sky-400 focus:outline-none md:w-[260px]"
+            className="theme-input w-full rounded-xl px-4 py-2 text-sm focus:outline-none md:w-[260px]"
           />
           <button
             type="button"
             onClick={handleCreateTopic}
-            className="rounded-full bg-sky-500 px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-sky-400"
+            className="game-button game-button-primary rounded-full px-4 py-2 text-xs font-semibold"
           >
             Add topic
           </button>
@@ -366,24 +366,24 @@ const Topics = () => {
       </Card>
 
       {loading ? (
-        <p className="text-sm text-slate-400">Loading topics…</p>
+        <p className="text-sm theme-muted">Loading topics…</p>
       ) : filteredTopics.length === 0 ? (
-        <p className="text-sm italic text-slate-500">
+        <p className="text-sm italic theme-subtle">
           No topics found yet.
         </p>
       ) : (
         <div className="space-y-3">
           {filteredTopics.map((topic) => (
-            <Card key={topic.topic} className="border-slate-800 p-4">
+            <Card key={topic.topic} className="p-4">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <h2 className="text-lg font-semibold text-slate-50">
+                  <h2 className="text-lg font-semibold theme-text">
                     {topic.topic}
                   </h2>
-                  <p className="mt-1 text-xs text-slate-400">
+                  <p className="mt-1 text-xs theme-muted">
                     {topic.quizzes} quizzes • {topic.questions} questions
                   </p>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-xs theme-subtle">
                     Updated {new Date(topic.last_updated).toLocaleDateString()}
                   </p>
                 </div>
@@ -391,7 +391,7 @@ const Topics = () => {
                   <button
                     type="button"
                     onClick={() => handleSelectTopic(topic.topic)}
-                    className="rounded-full border border-slate-700/80 px-4 py-1.5 text-xs font-medium text-slate-100 transition hover:border-sky-400"
+                    className="game-button game-button-secondary rounded-full px-4 py-1.5 text-xs font-medium"
                   >
                     Manage
                   </button>
@@ -410,30 +410,30 @@ const Topics = () => {
         </div>
       )}
 
-      <Card className="border-slate-800 p-4">
-        <h3 className="text-xs font-medium uppercase tracking-[0.22em] text-slate-400">
+      <Card className="p-4">
+        <h3 className="text-xs font-medium uppercase tracking-[0.22em] theme-muted">
           Questions by topic
         </h3>
         {!selectedTopic ? (
-          <p className="mt-3 text-sm text-slate-500">
+          <p className="mt-3 text-sm theme-subtle">
             Select a topic to create, update, or delete questions.
           </p>
         ) : (
           <div className="mt-4 space-y-4">
             <div className="flex flex-wrap items-center gap-3">
-              <label className="text-xs uppercase tracking-[0.2em] text-slate-400">
+              <label className="text-xs uppercase tracking-[0.2em] theme-muted">
                 Topic name
               </label>
               <input
                 type="text"
                 value={draftName}
                 onChange={(event) => setDraftName(event.target.value)}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-2 text-sm text-slate-100 focus:border-sky-400 focus:outline-none md:w-[280px]"
+                className="theme-input w-full rounded-xl px-4 py-2 text-sm focus:outline-none md:w-[280px]"
               />
               <button
                 type="button"
                 onClick={handleRename}
-                className="rounded-full bg-sky-500 px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-sky-400"
+                className="game-button game-button-primary rounded-full px-4 py-2 text-xs font-semibold"
               >
                 Save name
               </button>
@@ -444,7 +444,7 @@ const Topics = () => {
               )}
             </div>
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-sm font-semibold text-slate-100">
+              <span className="text-sm font-semibold theme-text">
                 {selectedTopic}
               </span>
               <select
@@ -452,7 +452,7 @@ const Topics = () => {
                 onChange={(event) =>
                   handleSelectQuiz(Number(event.target.value))
                 }
-                className="rounded-xl border border-slate-800 bg-slate-950/80 px-3 py-2 text-sm text-slate-100 focus:border-sky-400 focus:outline-none"
+                className="theme-input rounded-xl px-3 py-2 text-sm focus:outline-none"
               >
                 <option value="" disabled>
                   Choose quiz source
@@ -466,14 +466,14 @@ const Topics = () => {
               <button
                 type="button"
                 onClick={handleAddQuestion}
-                className="rounded-full border border-slate-700/80 px-4 py-2 text-xs font-semibold text-slate-100 transition hover:border-sky-400"
+                className="game-button game-button-secondary rounded-full px-4 py-2 text-xs font-semibold"
               >
                 Add question
               </button>
             </div>
 
             {!quizDraft ? (
-              <p className="text-sm text-slate-500">
+              <p className="text-sm theme-subtle">
                 Choose a quiz to edit its questions.
               </p>
             ) : (
@@ -481,10 +481,10 @@ const Topics = () => {
                 {(quizDraft.questions || []).map((question, index) => (
                   <div
                     key={question.id || index}
-                    className="rounded-lg border border-slate-800/80 bg-slate-950/60 p-3"
+                    className="theme-surface rounded-lg p-3"
                   >
                     <div className="flex items-center justify-between">
-                      <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                      <p className="text-xs uppercase tracking-[0.2em] theme-subtle">
                         {question.type === "flashcard" ? "Flashcard" : "MCQ"}
                       </p>
                       <button
@@ -507,7 +507,7 @@ const Topics = () => {
                               event.target.value
                             )
                           }
-                          className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                          className="theme-input w-full rounded-md px-2 py-1 text-sm"
                           placeholder="Front"
                         />
                         <textarea
@@ -519,7 +519,7 @@ const Topics = () => {
                               event.target.value
                             )
                           }
-                          className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                          className="theme-input w-full rounded-md px-2 py-1 text-sm"
                           rows={2}
                           placeholder="Back"
                         />
@@ -535,18 +535,18 @@ const Topics = () => {
                               event.target.value
                             )
                           }
-                          className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                          className="theme-input w-full rounded-md px-2 py-1 text-sm"
                           rows={2}
                           placeholder="Question text"
                         />
-                        <label className="flex items-center gap-2 text-xs text-slate-400">
+                        <label className="flex items-center gap-2 text-xs theme-muted">
                           <input
                             type="checkbox"
                             checked={Boolean(question.multiple_answers)}
                             onChange={(event) =>
                               handleToggleMultipleAnswers(index, event.target.checked)
                             }
-                            className="h-4 w-4 rounded border-slate-700 text-slate-100 accent-sky-400"
+                            className="h-4 w-4 rounded border-[var(--theme-input-border)] text-[var(--theme-text)] accent-emerald-400"
                           />
                           Multiple answers
                         </label>
@@ -571,7 +571,7 @@ const Topics = () => {
                                     event.target.checked
                                   )
                                 }
-                                className="h-4 w-4 rounded border-slate-700 text-slate-100 accent-emerald-400"
+                                className="h-4 w-4 rounded border-[var(--theme-input-border)] text-[var(--theme-text)] accent-emerald-400"
                               />
                               <input
                                 type="text"
@@ -583,7 +583,7 @@ const Topics = () => {
                                     event.target.value
                                   )
                                 }
-                                className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                                className="theme-input w-full rounded-md px-2 py-1 text-sm"
                                 placeholder={`Option ${optIndex + 1}`}
                               />
                             </div>
@@ -598,7 +598,7 @@ const Topics = () => {
                               event.target.value
                             )
                           }
-                          className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                          className="theme-input w-full rounded-md px-2 py-1 text-sm"
                           rows={2}
                           placeholder="Explanation"
                         />
@@ -609,7 +609,7 @@ const Topics = () => {
                 <button
                   type="button"
                   onClick={handleSaveQuestions}
-                  className="rounded-full bg-sky-500 px-4 py-2 text-xs font-semibold text-slate-950 transition hover:bg-sky-400"
+                  className="game-button game-button-primary rounded-full px-4 py-2 text-xs font-semibold"
                 >
                   {actionState === "saving"
                     ? "Saving..."

@@ -206,30 +206,30 @@ const Home = () => {
   return (
     <div className="space-y-8">
       <header className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-[0.26em] text-slate-400">
+        <p className="text-xs font-medium uppercase tracking-[0.26em] theme-muted">
           Dashboard
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
+        <h1 className="game-title text-3xl font-semibold theme-text">
           Your study library
         </h1>
-        <p className="max-w-2xl text-sm text-slate-400">
+        <p className="max-w-2xl text-sm theme-muted">
           Upload lecture notes and turn them into bite-sized quizzes that stay
           in sync with your Study Buddy device.
         </p>
       </header>
 
-      <Card className="border-dashed border-slate-800">
+      <Card>
         <UploadBox onUploadSuccess={handleUploadSuccess} />
       </Card>
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-xs font-medium uppercase tracking-[0.22em] text-slate-400">
+            <h2 className="text-xs font-medium uppercase tracking-[0.22em] theme-muted">
               Available on device
             </h2>
             {quizzes.length > 0 && !loadingData && (
-              <span className="text-xs text-slate-400">
+              <span className="text-xs theme-muted">
                 {quizzes.length} {quizzes.length === 1 ? "quiz" : "quizzes"}
               </span>
             )}
@@ -241,12 +241,12 @@ const Home = () => {
               placeholder="Search quizzes or topics..."
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
-              className="w-full rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-2 text-sm text-slate-100 shadow-sm focus:border-sky-400 focus:outline-none lg:w-[240px]"
+              className="theme-input w-full rounded-xl px-4 py-2 text-sm shadow-sm focus:outline-none lg:w-[240px]"
             />
             <select
               value={topicFilter}
               onChange={(event) => setTopicFilter(event.target.value)}
-              className="rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-2 text-sm text-slate-100 focus:border-sky-400 focus:outline-none"
+              className="theme-input rounded-xl px-4 py-2 text-sm focus:outline-none"
             >
               <option value="all">All topics</option>
               {topics.map((topic) => (
@@ -258,7 +258,7 @@ const Home = () => {
             <select
               value={sortBy}
               onChange={(event) => setSortBy(event.target.value)}
-              className="rounded-xl border border-slate-800 bg-slate-950/80 px-4 py-2 text-sm text-slate-100 focus:border-sky-400 focus:outline-none"
+              className="theme-input rounded-xl px-4 py-2 text-sm focus:outline-none"
             >
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
@@ -268,9 +268,9 @@ const Home = () => {
           </div>
 
           {loadingData ? (
-            <p className="text-sm text-slate-400">Loading your library…</p>
+            <p className="text-sm theme-muted">Loading your library…</p>
           ) : filteredQuizzes.length === 0 ? (
-            <p className="text-sm italic text-slate-500">
+            <p className="text-sm italic theme-subtle">
               No quizzes match the filters yet.
             </p>
           ) : (
@@ -282,7 +282,7 @@ const Home = () => {
                   onClick={() => handleSelectQuiz(quiz)}
                   className={`w-full text-left transition ${
                     selectedQuiz?.id === quiz.id
-                      ? "ring-2 ring-sky-500/60 ring-offset-0"
+                      ? "theme-ring"
                       : ""
                   }`}
                 >
@@ -294,23 +294,23 @@ const Home = () => {
         </div>
 
         <aside className="space-y-4">
-          <Card className="border-slate-800 p-4">
-            <h3 className="text-xs font-medium uppercase tracking-[0.22em] text-slate-400">
+          <Card className="p-4">
+            <h3 className="text-xs font-medium uppercase tracking-[0.22em] theme-muted">
               Upload history
             </h3>
             {uploadHistory.length === 0 ? (
-              <p className="mt-3 text-sm text-slate-500">
+              <p className="mt-3 text-sm theme-subtle">
                 Uploads will appear here.
               </p>
             ) : (
-              <ul className="mt-3 space-y-2 text-sm text-slate-300">
+              <ul className="mt-3 space-y-2 text-sm theme-muted">
                 {uploadHistory.map((entry) => (
                   <li
                     key={entry.id}
-                    className="flex items-center justify-between rounded-lg border border-slate-800/80 bg-slate-950/60 px-3 py-2"
+                    className="theme-surface flex items-center justify-between rounded-lg px-3 py-2"
                   >
-                    <span>{entry.topic}</span>
-                    <span className="text-xs text-slate-500">
+                    <span className="theme-text">{entry.topic}</span>
+                    <span className="text-xs theme-subtle">
                       {new Date(entry.createdAt).toLocaleTimeString()}
                     </span>
                   </li>
@@ -319,28 +319,28 @@ const Home = () => {
             )}
           </Card>
 
-          <Card className="border-slate-800 p-4">
-            <h3 className="text-xs font-medium uppercase tracking-[0.22em] text-slate-400">
+          <Card className="p-4">
+            <h3 className="text-xs font-medium uppercase tracking-[0.22em] theme-muted">
               Topic analytics
             </h3>
             {topicAnalytics.length === 0 ? (
-              <p className="mt-3 text-sm text-slate-500">
+              <p className="mt-3 text-sm theme-subtle">
                 Complete quizzes on the device to see topic progress.
               </p>
             ) : (
-              <ul className="mt-3 space-y-3 text-sm text-slate-200">
+              <ul className="mt-3 space-y-3 text-sm theme-muted">
                 {topicAnalytics.map((topic) => (
                   <li
                     key={topic.topic}
-                    className="rounded-lg border border-slate-800/80 bg-slate-950/60 px-3 py-2"
+                    className="theme-surface rounded-lg px-3 py-2"
                   >
-                    <p className="text-sm font-semibold text-slate-100">
+                    <p className="text-sm font-semibold theme-text">
                       {topic.topic}
                     </p>
-                    <p className="mt-1 text-xs text-slate-400">
+                    <p className="mt-1 text-xs theme-muted">
                       {topic.correct}/{topic.total} correct • {topic.percent}%
                     </p>
-                    <p className="mt-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs theme-subtle">
                       Updated {new Date(topic.lastUpdated).toLocaleDateString()}
                     </p>
                   </li>
@@ -349,18 +349,18 @@ const Home = () => {
             )}
           </Card>
 
-          <Card className="border-slate-800 p-4">
-            <h3 className="text-xs font-medium uppercase tracking-[0.22em] text-slate-400">
+          <Card className="p-4">
+            <h3 className="text-xs font-medium uppercase tracking-[0.22em] theme-muted">
               Preview & edit
             </h3>
             {!selectedQuiz || !editDraft ? (
-              <p className="mt-3 text-sm text-slate-500">
+              <p className="mt-3 text-sm theme-subtle">
                 Select a quiz to preview and edit.
               </p>
             ) : (
-              <div className="mt-3 space-y-4 text-sm text-slate-200">
+              <div className="mt-3 space-y-4 text-sm theme-muted">
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                  <label className="text-xs uppercase tracking-[0.2em] theme-muted">
                     Topic
                   </label>
                   <input
@@ -369,7 +369,7 @@ const Home = () => {
                     onChange={(event) =>
                       handleDraftChange("meta.topic", event.target.value)
                     }
-                    className="w-full rounded-lg border border-slate-800 bg-slate-950/80 px-3 py-2 text-sm text-slate-100 focus:border-sky-400 focus:outline-none"
+                    className="theme-input w-full rounded-lg px-3 py-2 text-sm focus:outline-none"
                   />
                 </div>
 
@@ -377,9 +377,9 @@ const Home = () => {
                   {(editDraft.questions || []).map((question, index) => (
                     <div
                       key={question.id || index}
-                      className="rounded-lg border border-slate-800/80 bg-slate-950/60 p-3"
+                      className="theme-surface rounded-lg p-3"
                     >
-                      <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                      <p className="text-xs uppercase tracking-[0.2em] theme-subtle">
                         {question.type === "flashcard"
                           ? "Flashcard"
                           : "MCQ"}
@@ -396,7 +396,7 @@ const Home = () => {
                                 event.target.value
                               )
                             }
-                            className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                            className="theme-input w-full rounded-md px-2 py-1 text-sm"
                             placeholder="Front"
                           />
                           <textarea
@@ -408,7 +408,7 @@ const Home = () => {
                                 event.target.value
                               )
                             }
-                            className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                            className="theme-input w-full rounded-md px-2 py-1 text-sm"
                             rows={2}
                             placeholder="Back"
                           />
@@ -424,7 +424,7 @@ const Home = () => {
                                 event.target.value
                               )
                             }
-                            className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                            className="theme-input w-full rounded-md px-2 py-1 text-sm"
                             rows={2}
                             placeholder="Question text"
                           />
@@ -441,7 +441,7 @@ const Home = () => {
                                     event.target.value
                                   )
                                 }
-                                className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                                className="theme-input w-full rounded-md px-2 py-1 text-sm"
                                 placeholder={`Option ${optIndex + 1}`}
                               />
                             ))}
@@ -455,7 +455,7 @@ const Home = () => {
                                 event.target.value
                               )
                             }
-                            className="w-full rounded-md border border-slate-800 bg-slate-950/80 px-2 py-1 text-sm text-slate-100"
+                            className="theme-input w-full rounded-md px-2 py-1 text-sm"
                             rows={2}
                             placeholder="Explanation"
                           />
@@ -468,7 +468,7 @@ const Home = () => {
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="w-full rounded-lg bg-sky-500 px-3 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-400"
+                  className="game-button game-button-primary w-full rounded-lg px-3 py-2 text-sm font-semibold"
                 >
                   {saveState === "saving"
                     ? "Saving..."

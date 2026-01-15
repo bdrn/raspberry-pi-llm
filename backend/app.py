@@ -11,7 +11,7 @@ load_dotenv(env_path)
 from services.pdf_parser import extract_text_from_pdf
 from services.llm_generator import generate_quiz_from_text
 
-from database.models import db, Quiz, QuizSession
+from database.models import db, Quiz, QuizSession, AppSettings
 
 load_dotenv()
 
@@ -29,6 +29,9 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+    if not AppSettings.query.first():
+        db.session.add(AppSettings(theme="game"))
+        db.session.commit()
 
 @app.route('/')
 def home():
@@ -223,6 +226,34 @@ def remove_topic():
 
     db.session.commit()
     return jsonify({"updated": updated}), 200
+
+
+@app.route('/api/settings', methods=['GET'])
+def get_settings():
+    settings = AppSettings.query.first()
+    if not settings:
+        settings = AppSettings(theme="game")
+        db.session.add(settings)
+        db.session.commit()
+    return jsonify({"settings": settings.to_dict()}), 200
+
+
+@app.route('/api/settings', methods=['PUT'])
+def update_settings():
+    data = request.get_json(silent=True) or {}
+    theme = data.get("theme")
+    allowed = {"game", "minimal-dark", "minimal-light"}
+    if theme not in allowed:
+        return jsonify({"error": "Invalid theme"}), 400
+
+    settings = AppSettings.query.first()
+    if not settings:
+        settings = AppSettings(theme=theme)
+        db.session.add(settings)
+    else:
+        settings.theme = theme
+    db.session.commit()
+    return jsonify({"settings": settings.to_dict()}), 200
 
 
 if __name__ == "__main__":

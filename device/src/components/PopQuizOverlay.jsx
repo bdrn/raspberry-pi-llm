@@ -112,7 +112,7 @@ const PopQuizOverlay = () => {
     : [];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 px-4 py-6 backdrop-blur-sm">
+    <div className="theme-overlay fixed inset-0 z-50 flex items-center justify-center px-4 py-6 backdrop-blur-sm">
       <div className="game-panel relative w-full max-w-xl space-y-4 rounded-[32px] p-5 text-center">
         <div className="flex items-center justify-between">
           <p className="text-xs uppercase tracking-[0.4em] text-slate-400">
