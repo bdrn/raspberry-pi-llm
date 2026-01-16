@@ -30,7 +30,7 @@ const SideMenu = ({ onToggle }) => {
               to={item.path}
               className={`game-button flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold transition ${
                 isActive
-                  ? "game-button-primary text-slate-900"
+                  ? "game-button-primary"
                   : "game-button-secondary text-slate-100"
               }`}
             >

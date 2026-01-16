@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from datetime import datetime
 import os
 import json
 from dotenv import load_dotenv
@@ -140,7 +141,9 @@ def get_topics():
     topics = {}
     for quiz in quizzes:
         quiz_data = json.loads(quiz.quiz_data) if quiz.quiz_data else {}
-        topic = quiz.topic or quiz_data.get("meta", {}).get("topic") or "Untitled"
+        topic = quiz.topic or quiz_data.get("meta", {}).get("topic")
+        if not topic:
+            continue
         entry = topics.setdefault(
             topic,
             {"topic": topic, "quizzes": 0, "questions": 0, "last_updated": quiz.created_at}

@@ -287,6 +287,7 @@ body {
       transparent 55%
     );
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.2s ease;
   }
 

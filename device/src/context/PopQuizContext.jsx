@@ -61,13 +61,16 @@ const saveSettings = (settings) => {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
 };
 
-const getTopicLabel = (quiz) =>
-  quiz.topic || quiz.quiz_data?.meta?.topic || "Untitled topic";
+const getTopicLabel = (quiz) => {
+  const topic = quiz.topic || quiz.quiz_data?.meta?.topic;
+  return topic || null;
+};
 
 const buildTopics = (quizzes) => {
   const map = new Map();
   quizzes.forEach((quiz) => {
     const topic = getTopicLabel(quiz);
+    if (!topic) return;
     const questions = Array.isArray(quiz.quiz_data?.questions)
       ? quiz.quiz_data.questions
       : [];
@@ -90,6 +93,7 @@ const buildQuestionPool = (quizzes, selectedTopics) => {
 
   quizzes.forEach((quiz) => {
     const topic = getTopicLabel(quiz);
+    if (!topic) return;
     if (!allowAll && !allowed.has(topic)) return;
     const questions = Array.isArray(quiz.quiz_data?.questions)
       ? quiz.quiz_data.questions
