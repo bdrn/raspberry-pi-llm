@@ -103,6 +103,21 @@ const Home = () => {
     );
   }, [selectedQuestions, topics]);
 
+  const debugSample = useMemo(() => {
+    if (quizzes.length === 0) return null;
+    const quiz = quizzes[0];
+    const metaTopic = quiz?.quiz_data?.meta?.topic || null;
+    const questions = Array.isArray(quiz?.quiz_data?.questions)
+      ? quiz.quiz_data.questions.length
+      : 0;
+    return {
+      id: quiz?.id,
+      topic: quiz?.topic || null,
+      metaTopic,
+      questions,
+    };
+  }, [quizzes]);
+
   return (
     <div className="relative flex h-full flex-col items-center justify-center gap-3 px-3 py-3 overflow-hidden">
       <div className="space-y-1 text-center">
@@ -118,9 +133,19 @@ const Home = () => {
       </div>
       <div className="game-scroll scroll-hidden w-full flex-1 min-h-0 space-y-3 overflow-y-auto rounded-2xl p-3">
         {topics.length === 0 ? (
-          <p className="text-center text-sm text-slate-400">
-            No topics available yet.
-          </p>
+          <div className="space-y-2 text-center text-sm text-slate-400">
+            <p>No topics available yet.</p>
+            <p className="text-[11px] text-slate-500">
+              Synced quizzes: {quizzes.length}
+            </p>
+            {debugSample ? (
+              <p className="text-[10px] text-slate-500">
+                Sample quiz: id {debugSample.id} • topic {debugSample.topic || "none"} •
+                meta.topic {debugSample.metaTopic || "none"} • questions{" "}
+                {debugSample.questions}
+              </p>
+            ) : null}
+          </div>
         ) : (
           topics.map(({ topic, items }) => (
             <div

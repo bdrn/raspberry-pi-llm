@@ -7,6 +7,7 @@ const PopQuizSettings = () => {
     settings,
     updateSettings,
     topics,
+    quizzes,
     loading,
     refreshQuizzes,
     lastSyncedAt,
@@ -86,9 +87,12 @@ const PopQuizSettings = () => {
           {loading ? (
             <p className="text-sm text-slate-400">Loading topics...</p>
           ) : topics.length === 0 ? (
-            <p className="text-sm text-slate-400">
-              No topics yet. Upload quizzes on the dashboard first.
-            </p>
+            <div className="space-y-1 text-sm text-slate-400">
+              <p>No topics yet. Upload quizzes on the dashboard first.</p>
+              <p className="text-[11px] text-slate-500">
+                Synced quizzes: {quizzes.length}
+              </p>
+            </div>
           ) : (
             <div className="space-y-2">
               {topics.map((topic) => {
