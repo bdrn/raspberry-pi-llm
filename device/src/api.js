@@ -1,8 +1,13 @@
 import axios from "axios";
 
 const resolveBaseUrl = () => {
-  if (import.meta.env.VITE_DEVICE_API_URL) {
-    return import.meta.env.VITE_DEVICE_API_URL;
+  const envUrl =
+    import.meta.env.VITE_DEVICE_API_URL || import.meta.env.VITE_API_URL;
+  if (envUrl) {
+    return envUrl;
+  }
+  if (import.meta.env.DEV) {
+    return "/api";
   }
   if (typeof window !== "undefined") {
     return `http://${window.location.hostname}:5001/api`;
