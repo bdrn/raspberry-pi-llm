@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <div className="game-title flex items-center gap-2 text-sm theme-text">
           <span>Study Buddy</span>
-          {/* <img src={logo} alt="Study Buddy logo" className="w-13 h-12" /> */}
+          <img src={logo} alt="Study Buddy logo" className="w-13 h-12" />
         </div>
         <nav className="flex gap-2 text-xs text-[var(--theme-muted)]">
           <Link
@@ -30,32 +30,6 @@ const Navbar = () => {
           >
             Dashboard
             {isActive("/") && (
-              <span className="theme-accent-bg absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full" />
-            )}
-          </Link>
-          <Link
-            to="/topics"
-            className={`${linkBase} ${
-              isActive("/topics")
-                ? "theme-surface text-[var(--theme-text)]"
-                : "hover:text-[var(--theme-text)] hover:bg-white/5"
-            }`}
-          >
-            Topics
-            {isActive("/topics") && (
-              <span className="theme-accent-bg absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full" />
-            )}
-          </Link>
-          <Link
-            to="/settings"
-            className={`${linkBase} ${
-              isActive("/settings")
-                ? "theme-surface text-[var(--theme-text)]"
-                : "hover:text-[var(--theme-text)] hover:bg-white/5"
-            }`}
-          >
-            Settings
-            {isActive("/settings") && (
               <span className="theme-accent-bg absolute inset-x-3 -bottom-[2px] h-[2px] rounded-full" />
             )}
           </Link>

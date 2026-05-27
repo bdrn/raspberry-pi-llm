@@ -1,11 +1,10 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import api from "../api";
 import { Button } from "@/components/ui/button";
 
 const UploadBox = ({ onUploadSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const inputRef = useRef(null);
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
@@ -64,19 +63,20 @@ const UploadBox = ({ onUploadSuccess }) => {
             <Button
               variant="outline"
               size="sm"
+              asChild
               className="pointer-events-auto"
-              onClick={() => inputRef.current?.click()}
             >
-              Browse
+              <label className="cursor-pointer">
+                Browse…
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={handleFileChange}
+                  disabled={loading}
+                  className="hidden"
+                />
+              </label>
             </Button>
-            <input
-              ref={inputRef}
-              type="file"
-              accept="application/pdf"
-              onChange={handleFileChange}
-              disabled={loading}
-              className="hidden"
-            />
             <p className="text-[11px] theme-subtle">Max 10MB • PDF only</p>
           </div>
           {error && (

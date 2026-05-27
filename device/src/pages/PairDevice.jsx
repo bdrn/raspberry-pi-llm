@@ -8,23 +8,23 @@ import {
 
 const PairDevice = () => {
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
+    <div className="mx-auto max-w-xl space-y-4 px-3 py-3">
       <header className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-[0.26em] text-slate-400">
+        <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-slate-400">
           Devices
         </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-slate-50">
+        <h1 className="text-2xl font-semibold tracking-tight text-slate-50">
           Pair a new device
         </h1>
-        <p className="max-w-2xl text-sm text-slate-400">
+        <p className="max-w-xl text-[11px] text-slate-400">
           Generate a QR code to link your Study Buddy device with this web
           dashboard. Once paired, new quizzes will sync automatically.
         </p>
       </header>
 
-      <Card className="max-w-xl border-slate-800">
+      <Card className="max-w-xl">
         <CardHeader>
-          <CardTitle className="text-base text-slate-50">
+          <CardTitle className="text-sm text-slate-50">
             Pair with QR code
           </CardTitle>
           <CardDescription>
@@ -32,7 +32,7 @@ const PairDevice = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex h-52 items-center justify-center rounded-xl border border-dashed border-slate-700 bg-slate-900/70 text-xs text-slate-500">
+          <div className="flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-700 bg-slate-900/70 text-[11px] text-slate-500">
             QR code placeholder
           </div>
         </CardContent>
