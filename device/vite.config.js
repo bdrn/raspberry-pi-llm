@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
     env.VITE_DEVICE_API_PROXY_TARGET ||
     env.VITE_DEVICE_API_URL ||
     env.VITE_API_URL ||
-    "http://172.20.10.3:5000";
+    "http://172.20.10.3:5001";
   const target = rawTarget.replace(/\/api\/?$/, "");
 
   return {
